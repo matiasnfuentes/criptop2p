@@ -1,4 +1,4 @@
-package ar.edu.unq.criptop2p.criptop2p
+package ar.edu.unq.criptop2p
 
 import org.springframework.boot.builder.SpringApplicationBuilder
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer

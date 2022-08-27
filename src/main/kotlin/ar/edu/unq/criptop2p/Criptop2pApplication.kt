@@ -1,4 +1,4 @@
-package ar.edu.unq.criptop2p.criptop2p
+package ar.edu.unq.criptop2p
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
