@@ -1,1 +1,1 @@
-web: java -jar build/server/webapp-runner-*.jar build/libs/*.war
+web: java -jar build/server/webapp-runner-9.0.27.1.jar build/libs/criptop2p-0.0.1-SNAPSHOT-plain.war
