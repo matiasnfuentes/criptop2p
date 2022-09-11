@@ -1,1 +1,1 @@
-web: java -jar webapp-runner-9.0.27.1.jar build/libs/*.war
+web: java -jar -Dserver.port=$PORT webapp-runner-9.0.27.1.jar build/libs/*.war
