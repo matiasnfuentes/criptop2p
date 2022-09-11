@@ -30,7 +30,6 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	//testImplementation("org.springframework.security:spring-security-test")
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
-	compileClasspath ("com.github.jsimone:webapp-runner:9.0.27.1")
 }
 
 tasks.withType<KotlinCompile> {
@@ -43,16 +42,3 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
-
-tasks.war {
-	mustRunAfter("clean")
-}
-
-tasks.register<Copy>("copyToLib"){
-	into("$buildDir/server")
-	from(configurations.compileClasspath) {
-		include("webapp-runner*")
-	}
-}
-
-task("stage").dependsOn("clean", "war")
