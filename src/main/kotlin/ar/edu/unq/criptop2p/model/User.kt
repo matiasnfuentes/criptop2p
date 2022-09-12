@@ -16,7 +16,7 @@ class User(@Column
            private var cvu: String,
            @Column
            private var walletAddress: String,
-           @OneToOne
+           @OneToOne(cascade=[CascadeType.ALL])
            private var address: Address) {
 
     @Id

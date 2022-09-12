@@ -2,6 +2,8 @@ package ar.edu.unq.criptop2p.controller
 
 
 import ar.edu.unq.criptop2p.model.User
+import ar.edu.unq.criptop2p.service.UserService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -9,12 +11,14 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping(path = ["api/user"])
-class userController {
+class UserController(
+        @Autowired
+        private val userService: UserService) {
 
     @PostMapping
     fun register(@RequestBody
                  user: User){
-        println(user)
+        userService.save(user)
     }
 
 }
