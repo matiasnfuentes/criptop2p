@@ -28,4 +28,16 @@ class Address(@field:Size(min = 3, max = 30, message = "street length should be 
     )
     private var id: Long? = null
 
+    fun getStreet():String{
+        return this.street;
+    }
+
+    fun getNumber():Int{
+        return this.number;
+    }
+
+    fun getCity():String{
+        return this.city;
+    }
+
 }

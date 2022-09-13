@@ -29,7 +29,7 @@ class User(@field:Size(min = 3, max = 30, message = "firstName length should be 
            @field:Size(min = 8, max = 8, message = "walletAddress length should be 8 characters long")
            @Column
            private var walletAddress: String,
-           @Valid
+           @field:Valid
            @OneToOne(cascade=[CascadeType.ALL])
            private var address: Address) {
 
@@ -55,7 +55,32 @@ class User(@field:Size(min = 3, max = 30, message = "firstName length should be 
         return 0
     }
 
+    fun getfirstName(): String{
+        return this.firstName;
+    }
+
+    fun getlastName(): String{
+        return this.lastName;
+    }
+
     fun getEmail():String {
         return this.email
     }
+
+    fun getPassword():String{
+        return this.password;
+    }
+
+    fun getCvu():String{
+        return this.cvu;
+    }
+
+    fun getWalletAddress():String{
+        return this.walletAddress;
+    }
+
+    fun getAddress():Address{
+        return this.address;
+    }
+
 }
