@@ -30,6 +30,9 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	//testImplementation("org.springframework.security:spring-security-test")
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
+	implementation("org.springframework.boot:spring-boot-starter-validation:2.7.3")
+	implementation("org.springframework.security:spring-security-crypto:5.7.3")
+
 }
 
 tasks.withType<KotlinCompile> {
