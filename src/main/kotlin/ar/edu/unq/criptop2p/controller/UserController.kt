@@ -1,7 +1,6 @@
 package ar.edu.unq.criptop2p.controller
 
-
-import ar.edu.unq.criptop2p.model.User
+import ar.edu.unq.criptop2p.persistance.UserDto
 import ar.edu.unq.criptop2p.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,8 +18,8 @@ class UserController(
     @PostMapping
     fun register(@Valid
                  @RequestBody
-                 user: User){
-        userService.save(user)
+                 userDto: UserDto){
+        userService.save(userDto)
     }
 
 }
