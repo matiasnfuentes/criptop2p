@@ -13,7 +13,7 @@ class UserService(
         private val userRepository: UserRepository) {
 
     fun save(user: User){
-        if(userRepository.findByEmail(user.getEmail()).isEmpty()) {
+        if(userRepository.findByEmail(user.getEmail()) == null) {
             userRepository.save(user)
         }
         else {

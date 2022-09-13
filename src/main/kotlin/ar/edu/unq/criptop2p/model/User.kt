@@ -17,7 +17,7 @@ class User(@field:Size(min = 3, max = 30, message = "firstName length should be 
            @Column
            private var lastName: String,
            @field:[Email(message = "email should be a valid address") NotEmpty(message = "email should not be empty")]
-           @Column
+           @Column(unique=true)
            private var email: String,
            @field:Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,}$",
                           message = "Password should be at lest 6 char long, with 1 uppercase, 1 lowercase, special character")
