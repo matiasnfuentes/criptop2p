@@ -5,6 +5,7 @@ import ar.edu.unq.criptop2p.service.CryptoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -17,6 +18,12 @@ class CryptoController (
     @GetMapping("/prices")
     fun prices(): ResponseEntity<List<CryptoCurrency>> {
         return ResponseEntity.ok().body(this.cryptoService.getCryptoPrices())
+    }
+
+    @GetMapping("/price/{id}")
+    fun last24HsPrices(@PathVariable id:String): ResponseEntity<List<CryptoCurrency>> {
+        print(id)
+        return ResponseEntity.ok().body(this.cryptoService.getLast24HsPrices(id))
     }
 
 }

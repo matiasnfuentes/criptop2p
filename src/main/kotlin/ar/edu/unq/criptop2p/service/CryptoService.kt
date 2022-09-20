@@ -3,6 +3,7 @@ package ar.edu.unq.criptop2p.service
 import ar.edu.unq.criptop2p.model.CryptoCurrency
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
+import java.util.*
 
 @Service
 class CryptoService {
@@ -26,6 +27,8 @@ class CryptoService {
         "AUDIOUSDT"
     )
 
+    private val oneDay = 86400000
+
     private val baseURL = "https://api.binance.com/api/v3"
 
     // Este lo deje como modelo para mas adelante
@@ -37,12 +40,31 @@ class CryptoService {
         )
     }
 
+    fun getLast24HsPrices(cryptoSymbol: String): List<CryptoCurrency>? {
+        val endTime = Date().time
+        val startTime = endTime - oneDay
+
+        val requestURL = this.baseURL +
+                "/klines?interval=1h&symbol=${cryptoSymbol}&startTime=${startTime}&endTime=${endTime}"
+
+        val last24HsPrices = this.restTemplate.getForObject(
+            requestURL,
+            Array<Array<Any>>::class.java
+        )
+
+        return last24HsPrices?.map { CryptoCurrency((it[1] as String).toDouble(), cryptoSymbol, Date(it[0] as Long)) }
+            ?.toList()
+    }
+
     fun getCryptoPrices(): List<CryptoCurrency>? {
+
+        val requestURL = this.baseURL + "/ticker/price?symbols=${symbolList.map { "\"${it}\"" }}".replace(
+            " ",
+            ""
+        )
+
         return restTemplate.getForObject(
-            this.baseURL + "/ticker/price?symbols=${symbolList.map { "\"${it}\"" }}".replace(
-                " ",
-                ""
-            ), Array<CryptoCurrency>::class.java
+            requestURL, Array<CryptoCurrency>::class.java
         )?.toList()
     }
 
