@@ -1,8 +1,10 @@
 package ar.edu.unq.criptop2p.service
 
 import ar.edu.unq.criptop2p.model.CryptoCurrency
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
+import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @Service
@@ -41,6 +43,12 @@ class CryptoService {
     }
 
     fun getLast24HsPrices(cryptoSymbol: String): List<CryptoCurrency>? {
+
+        if (!symbolList.contains(cryptoSymbol)) throw ResponseStatusException(
+            HttpStatus.BAD_REQUEST,
+            "Please provide a valid symbol"
+        )
+
         val endTime = Date().time
         val startTime = endTime - oneDay
 
