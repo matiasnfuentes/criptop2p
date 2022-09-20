@@ -20,9 +20,9 @@ class CryptoController (
         return ResponseEntity.ok().body(this.cryptoService.getCryptoPrices())
     }
 
-    @GetMapping("/price/{id}")
-    fun last24HsPrices(@PathVariable id:String): ResponseEntity<List<CryptoCurrency>> {
-        return ResponseEntity.ok().body(this.cryptoService.getLast24HsPrices(id))
+    @GetMapping("/price/{symbol}")
+    fun last24HsPrices(@PathVariable symbol:String): ResponseEntity<List<CryptoCurrency>> {
+        return ResponseEntity.ok().body(this.cryptoService.getLast24HsPrices(symbol))
     }
 
 }
