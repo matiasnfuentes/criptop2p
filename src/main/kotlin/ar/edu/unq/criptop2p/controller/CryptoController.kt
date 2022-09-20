@@ -22,7 +22,6 @@ class CryptoController (
 
     @GetMapping("/price/{id}")
     fun last24HsPrices(@PathVariable id:String): ResponseEntity<List<CryptoCurrency>> {
-        print(id)
         return ResponseEntity.ok().body(this.cryptoService.getLast24HsPrices(id))
     }
 
