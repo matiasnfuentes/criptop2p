@@ -7,8 +7,9 @@ import javax.persistence.*
 class CryptoCurrency(@Column
                      private val price: Double,
                      @Column
-                     private val symbol: String) {
-
+                     private val symbol: String,
+                     @Column
+                     private val timestamp: Date? = Date()) {
     @Id
     @SequenceGenerator(
             name = "cryptoCurrency_sequence",
@@ -21,10 +22,9 @@ class CryptoCurrency(@Column
     )
     @Column
     private val id: Long? = null
-    @Column
-    private val timestamp: Date = Date()
-
 
     fun getPrice(): Double = this.price
     fun getSymbol(): String = this.symbol
+
+    fun getTimeStamp(): Date? = this.timestamp
 }
