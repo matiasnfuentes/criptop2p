@@ -1,7 +1,8 @@
 package ar.edu.unq.criptop2p.service
 
 import ar.edu.unq.criptop2p.model.User
-import ar.edu.unq.criptop2p.persistance.UserDto
+import ar.edu.unq.criptop2p.controller.dto.ListableUserDTO
+import ar.edu.unq.criptop2p.controller.dto.UserDTO
 import ar.edu.unq.criptop2p.persistance.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -16,9 +17,9 @@ class UserService(
         @Autowired
         private val passwordEncoder: PasswordEncoder) {
 
-    fun save(userDto: UserDto){
+    fun save(userDto: UserDTO){
         if(userRepository.findByEmail(userDto.getEmail()) == null) {
-            userRepository.save(userDto2user(userDto))
+            userRepository.save(userDTO2user(userDto))
         }
         else {
             throw ResponseStatusException(HttpStatus.CONFLICT, "Email already registered")
@@ -29,14 +30,19 @@ class UserService(
         return userRepository.findByEmail(email)
     }
 
-    fun userDto2user(userDto: UserDto):User{
-        return User(userDto.getFirstName(),
-                    userDto.getLastName(),
-                    userDto.getEmail(),
-                    passwordEncoder.encode(userDto.getPassword()),
-                    userDto.getCvu(),
-                    userDto.getWalletAddress(),
-                    userDto.getAddress())
+    //@TECH-DEBT: [CRIP-21] - Agregar reputación y cantidad de operaciones a la lista de usuarios
+    fun getUserList():List<ListableUserDTO> = userRepository.findAll().map { user2listableUserDTO(it) }
+
+    fun userDTO2user(userDTO: UserDTO):User{
+        return User(userDTO.getFirstName(),
+                    userDTO.getLastName(),
+                    userDTO.getEmail(),
+                    passwordEncoder.encode(userDTO.getPassword()),
+                    userDTO.getCvu(),
+                    userDTO.getWalletAddress(),
+                    userDTO.getAddress())
     }
+
+    private fun user2listableUserDTO(user: User) = ListableUserDTO(user.getFirstName(), user.getLastName(), 0, 0)
 
 }

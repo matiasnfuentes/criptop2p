@@ -1,4 +1,4 @@
-package ar.edu.unq.criptop2p.persistance
+package ar.edu.unq.criptop2p.controller.dto
 
 data class ListableUserDTO(
     val firstName: String,
