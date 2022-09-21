@@ -1,15 +1,37 @@
 package ar.edu.unq.criptop2p.model
 
 import java.util.*
+import javax.persistence.*
 
-class Request(private val cryptoCurrency: CryptoCurrency,
-                       private val priceLimit: Double,
-                       private val amount: Int,
-                       private val user: User,
-                       private val type: RequestType) {
+@Entity
+class Request( @OneToOne(cascade=[CascadeType.ALL])
+               private val cryptoCurrency: CryptoCurrency,
+               @Column
+               private val priceLimit: Double,
+               @Column
+               private val amount: Int,
+               @ManyToOne
+               private val user: User,
+               @Column
+               private val type: RequestType) {
 
+    @Id
+    @SequenceGenerator(
+            name = "request_sequence",
+            sequenceName = "request_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "request_sequence"
+    )
+    @Column
+    private val id: Long? = null
+    @Column
     private var status: RequestStatus
+    @Column
     private val timeStamp: Date
+    @Column
     private var score: Int
 
     init {

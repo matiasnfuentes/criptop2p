@@ -1,7 +1,6 @@
 package ar.edu.unq.criptop2p.controller
 
 
-import ar.edu.unq.criptop2p.model.RequestType
 import ar.edu.unq.criptop2p.persistance.RequestDto
 import ar.edu.unq.criptop2p.service.RequestService
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +18,7 @@ class RequestController(@Autowired
                         private val requestService: RequestService) {
 
     @PostMapping("/{requestType}")
-    fun save(@PathVariable requestType:String, @RequestBody @Valid request: RequestDto){
+    fun save(@PathVariable requestType:String, @RequestBody request: RequestDto){
         requestService.save(requestType, request)
     }
 
