@@ -1,24 +1,25 @@
 package ar.edu.unq.criptop2p.model
 
-import java.time.LocalDate
+import java.util.*
 
-abstract class Request(private var cryptoCurrency: CryptoCurrency,
-                       private var priceLimit: Double,
-                       private var amount: Int,
-                       private var user: User) {
+class Request(private val cryptoCurrency: CryptoCurrency,
+                       private val priceLimit: Double,
+                       private val amount: Int,
+                       private val user: User,
+                       private val type: RequestType) {
 
     private var status: RequestStatus
-    private var timeStamp: LocalDate
+    private val timeStamp: Date
     private var score: Int
 
     init {
         this.status = RequestStatus.AVAILABLE
-        this.timeStamp = LocalDate.now()
+        this.timeStamp = Date()
         this.score = 0
     }
 
     fun priceARG(): Double{
-        //TODO: implement api call get current ARG value
+        //TODO: implement api call to get current ARG value
         return 0.0
     }
 
@@ -36,6 +37,37 @@ abstract class Request(private var cryptoCurrency: CryptoCurrency,
 
     fun confirm(){
         this.status = RequestStatus.CONFIRMED
+    }
+
+    fun getCryptoCurrency(): CryptoCurrency{
+        return this.cryptoCurrency
+    }
+
+    fun getPriceLimit(): Double{
+        return this.priceLimit
+    }
+
+    fun getAmount(): Int{
+        return this.amount
+    }
+
+    fun getUser(): User{
+        return this.user
+    }
+    fun getType(): RequestType{
+        return this.type
+    }
+
+    fun getStatus(): RequestStatus{
+        return this.status
+    }
+
+    fun getTimeStamp(): Date{
+        return this.timeStamp;
+    }
+
+    fun getScore(): Int{
+        return this.score
     }
 
 }
