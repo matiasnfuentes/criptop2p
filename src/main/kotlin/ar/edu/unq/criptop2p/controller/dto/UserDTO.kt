@@ -1,4 +1,4 @@
-package ar.edu.unq.criptop2p.persistance
+package ar.edu.unq.criptop2p.controller.dto
 
 import ar.edu.unq.criptop2p.model.Address
 import javax.validation.Valid
@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
-class UserDto(
+class UserDTO(
         @field:Size(min = 3, max = 30, message = "firstName length should be min 3 max 30")
         private var firstName: String,
         @field:Size(min = 3, max = 30, message = "lastName length should be min 3 max 30")
