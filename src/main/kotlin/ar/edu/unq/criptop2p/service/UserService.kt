@@ -30,7 +30,7 @@ class UserService(
         return userRepository.findByEmail(email)
     }
 
-    //@TECH-DEBT: [CRIP-21] - Agregar reputación y cantidad de operaciones a la lista de usuarios
+    // TODO: [CRIP-21] - Agregar reputación y cantidad de operaciones a la lista de usuarios
     fun getUserList():List<ListableUserDTO> = userRepository.findAll().map { user2listableUserDTO(it) }
 
     fun userDTO2user(userDTO: UserDTO):User{
@@ -43,6 +43,7 @@ class UserService(
                     userDTO.getAddress())
     }
 
+    // TODO: [CRIP-21] - Agregar reputación y cantidad de operaciones a la lista de usuarios
     private fun user2listableUserDTO(user: User) = ListableUserDTO(user.getFirstName(), user.getLastName(), 0, 0)
 
 }
