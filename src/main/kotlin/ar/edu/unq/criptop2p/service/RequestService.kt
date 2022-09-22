@@ -3,7 +3,7 @@ package ar.edu.unq.criptop2p.service
 import ar.edu.unq.criptop2p.model.Request
 import ar.edu.unq.criptop2p.model.RequestType
 import ar.edu.unq.criptop2p.model.User
-import ar.edu.unq.criptop2p.persistance.RequestDto
+import ar.edu.unq.criptop2p.persistance.RequestDTO
 import ar.edu.unq.criptop2p.persistance.RequestRepository
 import ar.edu.unq.criptop2p.persistance.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,7 +17,7 @@ class RequestService(@Autowired
                      @Autowired
                      private val userRepository: UserRepository) {
 
-    fun save(requestType: String, requestDto: RequestDto){
+    fun save(requestType: String, requestDto: RequestDTO){
         try {
             val type:RequestType = RequestType.valueOf(requestType)
             if (requestDto.getPriceLimit() < 1) { throw Exception() }
@@ -32,7 +32,7 @@ class RequestService(@Autowired
         }
     }
 
-    private fun requestDto2request(type:RequestType, requestDto: RequestDto, user: User): Request{
+    private fun requestDto2request(type:RequestType, requestDto: RequestDTO, user: User): Request{
         return Request(requestDto.getCryptoCurrency(), requestDto.getPriceLimit(), requestDto.getAmount(), user, type);
     }
 
