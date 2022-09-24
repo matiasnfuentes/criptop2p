@@ -31,7 +31,6 @@ class RequestService(@Autowired
             if (requestDto.getPriceLimit() < 1) { throw Exception( "Price limit must be > 0" ) }
             if (requestDto.getAmount() < 1) { throw Exception( "Amount must be > 0") }
             if ( ! cryptoService.getSymbolList().contains(requestDto.getCryptoCurrency().getSymbol())) { throw Exception( "Invalid cryptocurrency symbol") }
-            //TODO: validate CryptoCurrency
             //TODO: Recover user from database with id from JWT token - mock@domain
             val user : User? = userRepository.findByEmail("mock@domain.com")
             if (user != null) { requestRepository.save(requestDto2request(type, requestDto, user)) } else { throw Exception( "Invalid user") }
