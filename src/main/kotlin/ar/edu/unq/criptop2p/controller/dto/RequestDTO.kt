@@ -1,4 +1,4 @@
-package ar.edu.unq.criptop2p.persistance
+package ar.edu.unq.criptop2p.controller.dto
 
 import ar.edu.unq.criptop2p.model.CryptoCurrency
 

@@ -76,4 +76,8 @@ class CryptoService {
         )?.toList()
     }
 
+    fun getSymbolList():List<String>{
+        return this.symbolList;
+    }
+
 }
