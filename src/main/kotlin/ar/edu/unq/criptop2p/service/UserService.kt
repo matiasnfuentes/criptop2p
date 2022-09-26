@@ -28,6 +28,22 @@ class UserService(
 
     fun findByEmail(email: String): User? = userRepository.findByEmail(email)
 
+    fun authenticate(jwt: String?): User? {
+        if (jwt == null) {
+            throw ResponseStatusException(
+                HttpStatus.UNAUTHORIZED,
+                "Invalid JWT token"
+            )
+        }
+        val key: Key = Keys.hmacShaKeyFor(
+            "secret_key_that_must_be_changed_and_must_be_vey_long".toByteArray(StandardCharsets.UTF_8)
+        )
+
+        val issuer = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).body.issuer
+
+        return this.findByEmail(issuer)
+    }
+
     fun login(loginDTO: LoginDTO): ResponseEntity<String> {
 
         val user =
@@ -41,7 +57,7 @@ class UserService(
             "Password does not match"
         )
 
-        val issuer = user.getId().toString()
+        val issuer = user.getEmail()
         val key: Key = Keys.hmacShaKeyFor(
             "secret_key_that_must_be_changed_and_must_be_vey_long".toByteArray(StandardCharsets.UTF_8)
         )
