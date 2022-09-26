@@ -27,12 +27,13 @@ class RequestService(@Autowired
             } catch (e: Exception) {
                 throw Exception( "Invalid Parameter " + requestType )
             }
+            checkIFZeroOrLess(requestDto.priceLimit, "Price limit must be > 0")
+            checkIFZeroOrLess(requestDto.amount, "Amount must be > 0")
+            cryptoService.checkCryptoSymbol(requestDto.cryptoCurrency.getSymbol())
 
-            if (requestDto.getPriceLimit() < 1) { throw Exception( "Price limit must be > 0" ) }
-            if (requestDto.getAmount() < 1) { throw Exception( "Amount must be > 0") }
-            if ( ! cryptoService.getSymbolList().contains(requestDto.getCryptoCurrency().getSymbol())) { throw Exception( "Invalid cryptocurrency symbol") }
             //TODO: Recover user from database with id from JWT token - mock@domain
             val user : User? = userRepository.findByEmail("mock@domain.com")
+
             if (user != null) { requestRepository.save(requestDto2request(type, requestDto, user)) } else { throw Exception( "Invalid user") }
         }
         catch (e:Exception){
@@ -41,7 +42,11 @@ class RequestService(@Autowired
     }
 
     private fun requestDto2request(type:RequestType, requestDto: RequestDTO, user: User): Request{
-        return Request(requestDto.getCryptoCurrency(), requestDto.getPriceLimit(), requestDto.getAmount(), user, type);
+        return Request(requestDto.cryptoCurrency, requestDto.priceLimit, requestDto.amount, user, type);
+    }
+
+    private fun checkIFZeroOrLess(number:Double, exceptionMessage:String){
+        if (number <= 0) { throw Exception( exceptionMessage ) }
     }
 
 }

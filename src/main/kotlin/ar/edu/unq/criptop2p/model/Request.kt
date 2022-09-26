@@ -9,7 +9,7 @@ class Request( @OneToOne(cascade=[CascadeType.ALL])
                @Column
                private val priceLimit: Double,
                @Column
-               private val amount: Int,
+               private val amount: Double,
                @ManyToOne
                private val user: User,
                @Column
@@ -69,7 +69,7 @@ class Request( @OneToOne(cascade=[CascadeType.ALL])
         return this.priceLimit
     }
 
-    fun getAmount(): Int{
+    fun getAmount(): Double{
         return this.amount
     }
 

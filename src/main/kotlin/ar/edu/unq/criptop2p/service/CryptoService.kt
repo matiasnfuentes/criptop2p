@@ -44,10 +44,7 @@ class CryptoService {
 
     fun getLast24HsPrices(cryptoSymbol: String): List<CryptoCurrency>? {
 
-        if (!symbolList.contains(cryptoSymbol)) throw ResponseStatusException(
-            HttpStatus.BAD_REQUEST,
-            "Please provide a valid symbol"
-        )
+        checkCryptoSymbol(cryptoSymbol)
 
         val endTime = Date().time
         val startTime = endTime - oneDay
@@ -80,4 +77,10 @@ class CryptoService {
         return this.symbolList;
     }
 
+    fun checkCryptoSymbol(cryptoSymbol:String) {
+        if (!symbolList.contains(cryptoSymbol)) throw ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Please provide a valid symbol"
+        )
+    }
 }
