@@ -1,24 +1,47 @@
 package ar.edu.unq.criptop2p.model
 
-import java.time.LocalDate
+import java.util.*
+import javax.persistence.*
 
-abstract class Request(private var cryptoCurrency: CryptoCurrency,
-                       private var priceLimit: Double,
-                       private var amount: Int,
-                       private var user: User) {
+@Entity
+class Request( @OneToOne(cascade=[CascadeType.ALL])
+               private val cryptoCurrency: CryptoCurrency,
+               @Column
+               private val priceLimit: Double,
+               @Column
+               private val amount: Double,
+               @ManyToOne
+               private val user: User,
+               @Column
+               private val type: RequestType) {
 
+    @Id
+    @SequenceGenerator(
+            name = "request_sequence",
+            sequenceName = "request_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "request_sequence"
+    )
+    @Column
+    private val id: Long? = null
+    @Column
     private var status: RequestStatus
-    private var timeStamp: LocalDate
+    @Column
+    private val timeStamp: Date
+    @Column
     private var score: Int
 
     init {
         this.status = RequestStatus.AVAILABLE
-        this.timeStamp = LocalDate.now()
+        this.timeStamp = Date()
         this.score = 0
     }
 
     fun priceARG(): Double{
-        //TODO: implement api call get current ARG value
+        //TODO: implement api call to get current ARG value
         return 0.0
     }
 
@@ -36,6 +59,37 @@ abstract class Request(private var cryptoCurrency: CryptoCurrency,
 
     fun confirm(){
         this.status = RequestStatus.CONFIRMED
+    }
+
+    fun getCryptoCurrency(): CryptoCurrency{
+        return this.cryptoCurrency
+    }
+
+    fun getPriceLimit(): Double{
+        return this.priceLimit
+    }
+
+    fun getAmount(): Double{
+        return this.amount
+    }
+
+    fun getUser(): User{
+        return this.user
+    }
+    fun getType(): RequestType{
+        return this.type
+    }
+
+    fun getStatus(): RequestStatus{
+        return this.status
+    }
+
+    fun getTimeStamp(): Date{
+        return this.timeStamp;
+    }
+
+    fun getScore(): Int{
+        return this.score
     }
 
 }

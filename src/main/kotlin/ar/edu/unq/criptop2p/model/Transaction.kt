@@ -1,14 +1,14 @@
 package ar.edu.unq.criptop2p.model
 
-import java.time.LocalDate
+import java.util.*
 
-class Transaction(private val buyRequest: BuyRequest,
-                  private val sellRequest: SellRequest) {
+class Transaction(private val buyRequest: Request,
+                  private val sellRequest: Request) {
 
-    private val timeStamp: LocalDate
+    private val timeStamp: Date
 
     init {
-        this.timeStamp = LocalDate.now()
+        this.timeStamp = Date()
     }
 
 }
