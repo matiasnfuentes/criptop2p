@@ -4,92 +4,63 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class Request( @OneToOne(cascade=[CascadeType.ALL])
-               private val cryptoCurrency: CryptoCurrency,
-               @Column
-               private val priceLimit: Double,
-               @Column
-               private val amount: Double,
-               @ManyToOne
-               private val user: User,
-               @Column
-               private val type: RequestType) {
+class Request(
+    @OneToOne(cascade = [CascadeType.ALL])
+    private val cryptoCurrency: CryptoCurrency,
+    @Column
+    private val priceLimit: Double,
+    @Column
+    private val amount: Double,
+    @ManyToOne
+    private val user: User,
+    @Column
+    private val type: RequestType
+) {
 
     @Id
     @SequenceGenerator(
-            name = "request_sequence",
-            sequenceName = "request_sequence",
-            allocationSize = 1
+        name = "request_sequence",
+        sequenceName = "request_sequence",
+        allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "request_sequence"
+        strategy = GenerationType.SEQUENCE,
+        generator = "request_sequence"
     )
     @Column
     private val id: Long? = null
+
     @Column
-    private var status: RequestStatus
+    private var status: RequestStatus = RequestStatus.AVAILABLE
+
     @Column
-    private val timeStamp: Date
+    private val timeStamp: Date = Date()
+
     @Column
-    private var score: Int
+    private var score: Int = 0
 
-    init {
-        this.status = RequestStatus.AVAILABLE
-        this.timeStamp = Date()
-        this.score = 0
-    }
+    fun getCryptoCurrency(): CryptoCurrency = this.cryptoCurrency
+    fun getPriceLimit(): Double = this.priceLimit
+    fun getAmount(): Double = this.amount
+    fun getUser(): User = this.user
+    fun getType(): RequestType = this.type
+    fun getStatus(): RequestStatus = this.status
+    fun getTimeStamp(): Date = this.timeStamp
+    fun getScore(): Int = this.score
 
-    fun priceARG(): Double{
-        //TODO: implement api call to get current ARG value
-        return 0.0
-    }
+    //TODO: implement api call to get current ARG value
+    fun priceARG(): Double = 0.0
 
-    fun setAvailable(){
-        this.status = RequestStatus.AVAILABLE
-    }
-
-    fun waitForConfirmation(){
+    fun waitForConfirmation() {
         this.status = RequestStatus.WAITING_CONFIRMATION
     }
 
-    fun cancel(){
+    fun cancel() {
         this.status = RequestStatus.CANCELED
     }
 
-    fun confirm(){
+    fun confirm() {
         this.status = RequestStatus.CONFIRMED
-    }
-
-    fun getCryptoCurrency(): CryptoCurrency{
-        return this.cryptoCurrency
-    }
-
-    fun getPriceLimit(): Double{
-        return this.priceLimit
-    }
-
-    fun getAmount(): Double{
-        return this.amount
-    }
-
-    fun getUser(): User{
-        return this.user
-    }
-    fun getType(): RequestType{
-        return this.type
-    }
-
-    fun getStatus(): RequestStatus{
-        return this.status
-    }
-
-    fun getTimeStamp(): Date{
-        return this.timeStamp;
-    }
-
-    fun getScore(): Int{
-        return this.score
     }
 
 }

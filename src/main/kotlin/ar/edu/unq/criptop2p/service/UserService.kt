@@ -5,13 +5,13 @@ import ar.edu.unq.criptop2p.controller.dto.LoginDTO
 import ar.edu.unq.criptop2p.controller.dto.UserDTO
 import ar.edu.unq.criptop2p.model.User
 import ar.edu.unq.criptop2p.persistance.UserRepository
+import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 import java.nio.charset.StandardCharsets
@@ -22,8 +22,6 @@ import java.util.*
 class UserService(
     @Autowired
     private val userRepository: UserRepository,
-    @Autowired
-    private val passwordEncoder: PasswordEncoder
 ) {
 
     fun findByEmail(email: String): User? = userRepository.findByEmail(email)
@@ -38,10 +36,15 @@ class UserService(
         val key: Key = Keys.hmacShaKeyFor(
             "secret_key_that_must_be_changed_and_must_be_vey_long".toByteArray(StandardCharsets.UTF_8)
         )
-
-        val issuer = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).body.issuer
-
-        return this.findByEmail(issuer)
+        try {
+            val issuer = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).body.issuer
+            return this.findByEmail(issuer)
+        } catch (e: ExpiredJwtException){
+            throw ResponseStatusException(
+                HttpStatus.UNAUTHORIZED,
+                "Invalid JWT token"
+            )
+        }
     }
 
     fun login(loginDTO: LoginDTO): ResponseEntity<String> {
@@ -64,39 +67,22 @@ class UserService(
         val jwt = Jwts.builder().setIssuer(issuer).setExpiration(Date(System.currentTimeMillis() + 60 * 1000))
             .signWith(key, SignatureAlgorithm.HS256).compact()
 
-        // Por ahora retornamos el jwt de esta forma, pero lo podríamos mover a una cookie para que sea mas seguro
         return ResponseEntity.ok(jwt)
     }
 
     fun save(userDto: UserDTO) {
-        if (this.findByEmail(userDto.getEmail()) != null) throw ResponseStatusException(
+        if (this.findByEmail(userDto.email) != null) throw ResponseStatusException(
             HttpStatus.CONFLICT,
             "Email already registered"
         )
 
-        userRepository.save(userDTO2user(userDto))
-    }
+        val user = UserDTO.toUser(userDto)
+        user.encodePassword()
 
-    fun get(email: String): User? {
-        return userRepository.findByEmail(email)
-    }
-
-    // TODO: [CRIP-21] - Agregar reputación y cantidad de operaciones a la lista de usuarios
-    fun getUserList(): List<ListableUserDTO> = userRepository.findAll().map { user2listableUserDTO(it) }
-
-    fun userDTO2user(userDTO: UserDTO): User {
-        return User(
-            userDTO.getFirstName(),
-            userDTO.getLastName(),
-            userDTO.getEmail(),
-            passwordEncoder.encode(userDTO.getPassword()),
-            userDTO.getCvu(),
-            userDTO.getWalletAddress(),
-            userDTO.getAddress()
-        )
+        userRepository.save(user)
     }
 
     // TODO: [CRIP-21] - Agregar reputación y cantidad de operaciones a la lista de usuarios
-    private fun user2listableUserDTO(user: User) = ListableUserDTO(user.getFirstName(), user.getLastName(), 0, 0)
+    fun getUserList(): List<ListableUserDTO> = userRepository.findAll().map { ListableUserDTO.fromUser(it) }
 
 }
