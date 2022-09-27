@@ -11,41 +11,12 @@ import java.util.*
 class CryptoService {
 
     private val restTemplate = RestTemplate()
-
-    private val symbolList = listOf(
-        "ALICEUSDT",
-        "MATICUSDT",
-        "AXSUSDT",
-        "AAVEUSDT",
-        "ATOMUSDT",
-        "NEOUSDT",
-        "DOTUSDT",
-        "ETHUSDT",
-        "CAKEUSDT",
-        "BTCUSDT",
-        "BNBUSDT",
-        "ADAUSDT",
-        "TRXUSDT",
-        "AUDIOUSDT"
-    )
-
-    private val oneDay = 86400000
-
     private val baseURL = "https://api.binance.com/api/v3"
 
-    // Este lo deje como modelo para mas adelante
-    fun getPrice(cryptoSymbol: String): CryptoCurrency? {
-        return this.restTemplate.getForObject(
-            this.baseURL +
-                    "/ticker/price?symbols=${cryptoSymbol}",
-            CryptoCurrency::class.java
-        )
-    }
-
     fun getLast24HsPrices(cryptoSymbol: String): List<CryptoCurrency>? {
-
         checkCryptoSymbol(cryptoSymbol)
 
+        val oneDay = 86400000
         val endTime = Date().time
         val startTime = endTime - oneDay
 
@@ -63,24 +34,22 @@ class CryptoService {
 
     fun getCryptoPrices(): List<CryptoCurrency>? {
 
-        val requestURL = this.baseURL + "/ticker/price?symbols=${symbolList.map { "\"${it}\"" }}".replace(
+        val symbolListParsed = CryptoCurrency.symbolList.map { "\"${it}\"" }.toString().replace(
             " ",
             ""
         )
+
+        val requestURL = this.baseURL + "/ticker/price?symbols=${symbolListParsed}"
 
         return restTemplate.getForObject(
             requestURL, Array<CryptoCurrency>::class.java
         )?.toList()
     }
 
-    fun getSymbolList():List<String>{
-        return this.symbolList;
-    }
-
-    fun checkCryptoSymbol(cryptoSymbol:String) {
-        if (!symbolList.contains(cryptoSymbol)) throw ResponseStatusException(
-                HttpStatus.BAD_REQUEST,
-                "Please provide a valid symbol"
+    fun checkCryptoSymbol(cryptoSymbol: String) {
+        if (!CryptoCurrency.isAValidCryptoSymbol(cryptoSymbol)) throw ResponseStatusException(
+            HttpStatus.BAD_REQUEST,
+            "Please provide a valid symbol"
         )
     }
 }

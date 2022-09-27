@@ -35,6 +35,7 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+	testImplementation(kotlin("test"))
 
 }
 
@@ -46,5 +47,9 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.withType<Test> {
+	useJUnitPlatform()
+}
+
+tasks.test {
 	useJUnitPlatform()
 }

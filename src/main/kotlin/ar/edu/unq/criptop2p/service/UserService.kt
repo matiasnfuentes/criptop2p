@@ -11,7 +11,6 @@ import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 import java.nio.charset.StandardCharsets
@@ -22,8 +21,6 @@ import java.util.*
 class UserService(
     @Autowired
     private val userRepository: UserRepository,
-    @Autowired
-    private val passwordEncoder: PasswordEncoder
 ) {
 
     fun findByEmail(email: String): User? = userRepository.findByEmail(email)
@@ -64,7 +61,6 @@ class UserService(
         val jwt = Jwts.builder().setIssuer(issuer).setExpiration(Date(System.currentTimeMillis() + 60 * 1000))
             .signWith(key, SignatureAlgorithm.HS256).compact()
 
-        // Por ahora retornamos el jwt de esta forma, pero lo podríamos mover a una cookie para que sea mas seguro
         return ResponseEntity.ok(jwt)
     }
 
@@ -74,29 +70,13 @@ class UserService(
             "Email already registered"
         )
 
-        userRepository.save(userDTO2user(userDto))
-    }
+        val user = UserDTO.toUser(userDto)
+        user.encodePassword()
 
-    fun get(email: String): User? {
-        return userRepository.findByEmail(email)
-    }
-
-    // TODO: [CRIP-21] - Agregar reputación y cantidad de operaciones a la lista de usuarios
-    fun getUserList(): List<ListableUserDTO> = userRepository.findAll().map { user2listableUserDTO(it) }
-
-    fun userDTO2user(userDTO: UserDTO): User {
-        return User(
-            userDTO.getFirstName(),
-            userDTO.getLastName(),
-            userDTO.getEmail(),
-            passwordEncoder.encode(userDTO.getPassword()),
-            userDTO.getCvu(),
-            userDTO.getWalletAddress(),
-            userDTO.getAddress()
-        )
+        userRepository.save(user)
     }
 
     // TODO: [CRIP-21] - Agregar reputación y cantidad de operaciones a la lista de usuarios
-    private fun user2listableUserDTO(user: User) = ListableUserDTO(user.getFirstName(), user.getLastName(), 0, 0)
+    fun getUserList(): List<ListableUserDTO> = userRepository.findAll().map { ListableUserDTO.fromUser(it) }
 
 }

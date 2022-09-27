@@ -37,50 +37,27 @@ class User(
     )
     private var id: Long? = null
 
-    fun reputation(): Int {
-        //TODO: create reputation query
-        return 0
+    //TODO: create reputation query
+    fun reputation(): Int = 0
+
+    //TODO: create transactions query
+    fun totalTransactions(): Int = 0
+    fun getFirstName(): String = this.firstName
+    fun getLastName(): String = this.lastName
+    fun getEmail(): String = this.email
+    fun getPassword(): String = this.password
+    fun getCvu(): String = this.cvu
+    fun getWalletAddress(): String = this.walletAddress
+    fun getAddress(): Address = this.address
+    fun getId(): Long? = this.id
+
+    fun setId(id: Long) {
+        this.id = id
     }
 
-    fun totalTransactions(): Int {
-        //TODO: create transactions query
-        return 0
-    }
-
-    fun getFirstName(): String {
-        return this.firstName
-    }
-
-    fun getLastName(): String {
-        return this.lastName
-    }
-
-    fun getEmail(): String {
-        return this.email
-    }
-
-    fun getPassword(): String {
-        return this.password
-    }
-
-    fun getCvu(): String {
-        return this.cvu
-    }
-
-    fun getWalletAddress(): String {
-        return this.walletAddress
-    }
-
-    fun getAddress(): Address {
-        return this.address
-    }
-
-    fun getId(): Long? {
-        return this.id
-    }
-
-    fun comparePassword(password: String): Boolean {
-        return BCryptPasswordEncoder().matches(password, this.password)
+    fun comparePassword(password: String): Boolean = BCryptPasswordEncoder().matches(password, this.password)
+    fun encodePassword() {
+        this.password = BCryptPasswordEncoder().encode(this.password)
     }
 
 }
