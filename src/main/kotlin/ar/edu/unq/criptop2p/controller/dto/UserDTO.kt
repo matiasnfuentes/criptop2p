@@ -22,7 +22,8 @@ class UserDTO(
         @field:Size(min = 8, max = 8, message = "walletAddress length should be 8 characters long")
         private var walletAddress: String,
         @field:Valid
-        private var address: Address) {
+        private var address: Address
+) {
 
     private var id: Long? = null
 
