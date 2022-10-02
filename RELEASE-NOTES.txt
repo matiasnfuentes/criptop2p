@@ -1,0 +1,32 @@
+---------------------------------------------------------------------
+TAG ENTREGA1
+---------------------------------------------------------------------
+NEW FEATURES:
+    Core
+        Creación de repositorios GitHub
+        Configuración en Travis/GitHubActions
+        Build corriendo y SUCCESS
+        SonarCloud (Registrar el proyecto Backend)
+        Deploy automático utlizando HEROKU o cualquiera similar para deploy Automático
+        Clean Code según la materia
+        Configuracion de swagge (v3)
+        Estado de build en "Verde"
+        Utilizar H2 para persistir datos
+
+    Modelo
+        Implementar modelo completo
+        Testing automático unitario según las pautas de la materia
+
+    Funcionalidad
+        Proveer servicio de registracion de usuario
+        Listar cotizacion de criptoactivos
+        Permitir que un usuario exprese su intención de compra/venta
+        Segurizar el acceso a la API (JWT)
+        Mostrar las cotizaciones de las últimas 24hs para un cripto activo dado
+        Listado de cotizaciones
+
+NOTES:
+    Listado de cotizaciones: Testear performance
+
+KNOWN ISSUES:
+    -
