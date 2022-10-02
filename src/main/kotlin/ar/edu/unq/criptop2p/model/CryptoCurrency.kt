@@ -1,5 +1,6 @@
 package ar.edu.unq.criptop2p.model
 
+import io.swagger.v3.oas.annotations.media.Schema
 import java.util.*
 import javax.persistence.*
 
@@ -7,6 +8,7 @@ import javax.persistence.*
 class CryptoCurrency(
     @Column
     private val price: Double,
+    @field:Schema(name="symbol", description="Symbol must be supported by the platform")
     @Column
     private val symbol: String,
     @Column

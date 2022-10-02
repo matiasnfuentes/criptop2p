@@ -2,6 +2,7 @@ package ar.edu.unq.criptop2p.controller.dto
 
 import ar.edu.unq.criptop2p.model.Address
 import ar.edu.unq.criptop2p.model.User
+import io.swagger.v3.oas.annotations.media.Schema
 import javax.validation.Valid
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
@@ -13,6 +14,7 @@ class UserDTO(
     val firstName: String,
     @field:Size(min = 3, max = 30, message = "lastName length should be min 3 max 30")
     val lastName: String,
+    @field:Schema(name="email", description="Must have a valid email format")
     @field:[Email(message = "email should be a valid address") NotEmpty(message = "email should not be empty")]
     val email: String,
     @field:Pattern(

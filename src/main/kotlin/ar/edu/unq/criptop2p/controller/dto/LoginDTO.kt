@@ -1,10 +1,12 @@
 package ar.edu.unq.criptop2p.controller.dto
 
+import io.swagger.v3.oas.annotations.media.Schema
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.Pattern
 
 data class LoginDTO(
+    @field:Schema(name="email", description="Must have a valid email format")
     @field:[Email(message = "email should be a valid address") NotEmpty(message = "email should not be empty")]
     val email: String,
     @field:Pattern(
