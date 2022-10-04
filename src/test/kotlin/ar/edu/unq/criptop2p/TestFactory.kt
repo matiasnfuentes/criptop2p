@@ -23,25 +23,22 @@ class TestFactory {
 
     fun aRequest(
         cryptoCurrency: CryptoCurrency = aCryptoCurrency(),
-        priceLimit: Double = 0.0,
         amount: Double = 0.0,
         user: User = aUser(),
         type: RequestType = RequestType.BUY
-    ) = Request(cryptoCurrency, priceLimit, amount, user, type)
+    ) = Request(cryptoCurrency, amount, user, type)
 
     fun aBuyRequest(
         cryptoCurrency: CryptoCurrency = aCryptoCurrency(),
-        priceLimit: Double = 0.0,
         amount: Double = 0.0,
         user: User = aUser(),
-    ) = aRequest(cryptoCurrency, priceLimit, amount, user, RequestType.BUY)
+    ) = aRequest(cryptoCurrency, amount, user, RequestType.BUY)
 
     fun aSellRequest(
         cryptoCurrency: CryptoCurrency = aCryptoCurrency(),
-        priceLimit: Double = 0.0,
         amount: Double = 0.0,
         user: User = aUser(),
-    ) = aRequest(cryptoCurrency, priceLimit, amount, user, RequestType.SELL)
+    ) = aRequest(cryptoCurrency, amount, user, RequestType.SELL)
 
     fun aTransaction(
         buyRequest: Request = aBuyRequest(),

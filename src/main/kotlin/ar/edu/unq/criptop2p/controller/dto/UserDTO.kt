@@ -17,9 +17,10 @@ class UserDTO(
     @field:Schema(name="email", description="Must have a valid email format")
     @field:[Email(message = "email should be a valid address") NotEmpty(message = "email should not be empty")]
     val email: String,
+    @field:Schema(name="password", description="At lest 6 char long, with 1 uppercase, 1 lowercase, and a special character")
     @field:Pattern(
         regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).{6,}$",
-        message = "Password should be at lest 6 char long, with 1 uppercase, 1 lowercase, special character"
+        message = "Password should be at lest 6 char long, with 1 uppercase, 1 lowercase, and a special character"
     )
     val password: String,
     @field:Size(min = 22, max = 22, message = "cvu length should be 22 characters long")
