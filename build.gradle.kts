@@ -7,6 +7,8 @@ plugins {
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
+	id("jacoco")
+	id("org.sonarqube") version "3.3"
 }
 
 group = "ar.edu.unq.criptop2p"
@@ -39,6 +41,7 @@ dependencies {
 
 }
 
+
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -52,4 +55,12 @@ tasks.withType<Test> {
 
 tasks.test {
 	useJUnitPlatform()
+	finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+	dependsOn(tasks.test) // tests are required to run before generating the report
+	reports {
+		xml.required.set(true)
+	}
 }
