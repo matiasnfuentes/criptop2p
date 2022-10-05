@@ -19,7 +19,7 @@ class RequestController(
 ) {
 
     @Operation(summary="API to post a request", description="This endpoint allow a registered user to post a request (secret_token needed).")
-    @PostMapping("/save")
+    @PostMapping("/")
     fun save(
         @RequestBody request: RequestDTO,
         @RequestHeader("secret_token") secretToken: String
