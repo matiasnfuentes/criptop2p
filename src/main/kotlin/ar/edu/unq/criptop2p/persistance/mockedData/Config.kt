@@ -16,16 +16,19 @@ class Config {
         return CommandLineRunner { _ ->
 
             // Setting up users
+            val randomPassword = "AsDtest456$"
+            val randomStreet = "No name street"
+            val randomCity = "No name city"
 
             val johnDoe = User(
                 "John",
                 "Doe",
                 "john-doe@gmail.com",
-                "AsDtest456$",
+                randomPassword,
                 "1234567890123456789012",
                 "12345678",
                 Address(
-                    "No name Street", 123, "No name city"
+                    randomStreet, 123, randomCity
                 )
             )
 
@@ -33,11 +36,11 @@ class Config {
                 "Jane",
                 "Poe",
                 "jane-poe@gmail.com",
-                "AsDtest456$",
+                randomPassword,
                 "1234567890123456789013",
                 "12345679",
                 Address(
-                    "No name Street", 124, "No name city"
+                    randomStreet, 124, randomCity
                 )
             )
 
@@ -45,11 +48,11 @@ class Config {
                 "Richard",
                 "Roe",
                 "richard-roee@gmail.com",
-                "AsDtest456$",
+                randomPassword,
                 "1234567890123456789014",
                 "12345670",
                 Address(
-                    "No name Street", 125, "No name city"
+                    randomStreet, 125, randomCity
                 )
             )
 
@@ -59,13 +62,13 @@ class Config {
 
             // Setting up requests
 
-            val CURRENT_DATE = Date()
+            val currentDate = Date()
 
             val request1 = Request(
                 CryptoCurrency(
                     123.05,
                     "ALICEUSDT",
-                    CURRENT_DATE
+                    currentDate
                 ),
                 125.0,
                 50.0,
@@ -77,7 +80,7 @@ class Config {
                 CryptoCurrency(
                     145.05,
                     "CAKEUSDT",
-                    CURRENT_DATE
+                    currentDate
                 ),
                 140.0,
                 100.0,
@@ -89,7 +92,7 @@ class Config {
                 CryptoCurrency(
                     200.05,
                     "MATICUSDT",
-                    CURRENT_DATE
+                    currentDate
                 ),
                 210.0,
                 15.0,
@@ -100,7 +103,7 @@ class Config {
                 CryptoCurrency(
                     145.05,
                     "CAKEUSDT",
-                    CURRENT_DATE
+                    currentDate
                 ),
                 150.0,
                 15.0,
