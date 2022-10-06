@@ -15,14 +15,6 @@ internal class RequestTest : AbstractTest() {
     }
 
     @Test
-    fun getPriceLimit() {
-        val aPriceLimit = 10.00
-        val aRequest = factory.aRequest(priceLimit = aPriceLimit)
-
-        assertEquals(aPriceLimit, aRequest.getPriceLimit())
-    }
-
-    @Test
     fun getAmount() {
         val anAmount = 10.00
         val aRequest = factory.aRequest(amount = anAmount)

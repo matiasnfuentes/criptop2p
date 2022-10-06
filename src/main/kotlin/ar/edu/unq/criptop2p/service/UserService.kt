@@ -25,6 +25,7 @@ class UserService(
 ) {
 
     fun findByEmail(email: String): User? = userRepository.findByEmail(email)
+    fun findById(id: Long): Optional<User> = userRepository.findById(id)
 
     fun authenticate(jwt: String?): User? {
         if (jwt == null) {

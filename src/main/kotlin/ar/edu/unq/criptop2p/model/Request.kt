@@ -8,8 +8,6 @@ class Request(
     @OneToOne(cascade = [CascadeType.ALL])
     private val cryptoCurrency: CryptoCurrency,
     @Column
-    private val priceLimit: Double,
-    @Column
     private val amount: Double,
     @ManyToOne
     private val user: User,
@@ -40,13 +38,13 @@ class Request(
     private var score: Int = 0
 
     fun getCryptoCurrency(): CryptoCurrency = this.cryptoCurrency
-    fun getPriceLimit(): Double = this.priceLimit
     fun getAmount(): Double = this.amount
     fun getUser(): User = this.user
     fun getType(): RequestType = this.type
     fun getStatus(): RequestStatus = this.status
     fun getTimeStamp(): Date = this.timeStamp
     fun getScore(): Int = this.score
+    fun getId(): Long? = this.id
 
     //TODO: implement api call to get current ARG value
     fun priceARG(): Double = 0.0

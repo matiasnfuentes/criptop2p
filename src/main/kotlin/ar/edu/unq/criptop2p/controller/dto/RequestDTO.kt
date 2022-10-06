@@ -6,13 +6,16 @@ import ar.edu.unq.criptop2p.model.RequestType
 import ar.edu.unq.criptop2p.model.User
 
 data class RequestDTO(
-    val cryptoCurrency: CryptoCurrency,
+    val symbol: String,
     val priceLimit: Double,
-    val amount: Double
+    val amount: Double,
+    val type: RequestType,
+    val id: Long? = null
 ) {
+
     companion object {
-        fun toRequest(type: RequestType, requestDto: RequestDTO, user: User): Request =
-            Request(requestDto.cryptoCurrency, requestDto.priceLimit, requestDto.amount, user, type)
+        fun toRequest(requestDto: RequestDTO, user: User): Request =
+            Request(CryptoCurrency(requestDto.priceLimit, requestDto.symbol), requestDto.amount, user, requestDto.type)
 
     }
 }

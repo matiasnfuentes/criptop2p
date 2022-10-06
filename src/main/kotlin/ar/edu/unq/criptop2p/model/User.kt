@@ -38,7 +38,7 @@ class User(
     private var id: Long? = null
 
     //TODO: create reputation query
-    fun reputation(): Int = 0
+    fun reputation(): String = "0"
 
     //TODO: create transactions query
     fun totalTransactions(): Int = 0
