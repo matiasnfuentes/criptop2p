@@ -28,15 +28,24 @@ class RequestController(
         requestService.save(request, user)
     }
 
-    @Operation(summary="API to list a active requests", description="This endpoint list all current active requests (secret_token needed).")
+    @Operation(summary="API to list a user available requests", description="This endpoint lists a user current available requests (secret_token needed).")
     @GetMapping("/{userId}")
-    fun getActive(
+    fun getUserAvailable(
             @PathVariable userId: Long,
             @RequestHeader("secret_token") secretToken: String
     ):List<ListableRequestDTO> {
         userService.authenticate(secretToken)
         val user = userService.findById(userId)
-        return requestService.getActiveRequest(user)
+        return requestService.getUserAvailableRequests(user)
+    }
+
+    @Operation(summary="API to list all available requests", description="This endpoint lists all current available requests (secret_token needed).")
+    @GetMapping("/")
+    fun getAllAvailable(
+            @RequestHeader("secret_token") secretToken: String
+    ):List<ListableRequestDTO> {
+        userService.authenticate(secretToken)
+        return requestService.getAllAvailableRequests()
     }
 
 }

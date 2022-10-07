@@ -70,7 +70,6 @@ class Config {
                     "ALICEUSDT",
                     currentDate
                 ),
-                125.0,
                 50.0,
                 johnDoe,
                 RequestType.BUY
@@ -83,7 +82,6 @@ class Config {
                     currentDate
                 ),
                 140.0,
-                100.0,
                 janePoe,
                 RequestType.SELL
             )
@@ -95,7 +93,6 @@ class Config {
                     currentDate
                 ),
                 210.0,
-                15.0,
                 richardRoe,
                 RequestType.BUY
             )
@@ -105,7 +102,6 @@ class Config {
                     "CAKEUSDT",
                     currentDate
                 ),
-                150.0,
                 15.0,
                 richardRoe,
                 RequestType.BUY
