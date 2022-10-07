@@ -35,11 +35,15 @@ class RequestService(
         }
     }
 
-    fun getActiveRequest(user: Optional<User>):List<ListableRequestDTO>{
+    fun getUserAvailableRequests(user: Optional<User>):List<ListableRequestDTO>{
 
         if (!user.isPresent) throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user")
 
         return requestRepository.findByUserAndStatus(user.get(), RequestStatus.AVAILABLE).map{ this.requestToListableRequestDTO(it) }
+    }
+
+    fun getAllAvailableRequests():List<ListableRequestDTO>{
+        return requestRepository.findByStatus(RequestStatus.AVAILABLE).map{ this.requestToListableRequestDTO(it) }
     }
 
     private fun checkIFZeroOrLess(number: Double, exceptionMessage: String) {
