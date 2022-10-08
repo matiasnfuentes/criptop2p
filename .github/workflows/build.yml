@@ -18,6 +18,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build --scan --no-daemon
   sonarcloud:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
