@@ -11,6 +11,10 @@ plugins {
 	id("org.sonarqube") version "3.3"
 }
 
+jacoco {
+	toolVersion = "0.8.7"
+}
+
 group = "ar.edu.unq.criptop2p"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
@@ -41,7 +45,6 @@ dependencies {
 
 }
 
-
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -51,16 +54,14 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-}
-
-tasks.test {
-	useJUnitPlatform()
 	finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.jacocoTestReport {
 	dependsOn(tasks.test)
 	reports {
+		html.required.set(true)
+		csv.required.set(true)
 		xml.required.set(true)
 	}
 }
