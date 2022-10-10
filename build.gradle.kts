@@ -7,6 +7,8 @@ plugins {
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
+	id("jacoco")
+	id("org.sonarqube") version "3.3"
 }
 
 group = "ar.edu.unq.criptop2p"
@@ -15,6 +17,14 @@ java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
 	mavenCentral()
+}
+
+sonarqube {
+	properties {
+		property("sonar.projectKey", "matiasnfuentes_criptop2p")
+		property("sonar.organization", "criptop2p")
+		property("sonar.host.url", "https://sonarcloud.io")
+	}
 }
 
 dependencies {
@@ -52,4 +62,12 @@ tasks.withType<Test> {
 
 tasks.test {
 	useJUnitPlatform()
+	finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+	dependsOn(tasks.test)
+	reports {
+		xml.required.set(true)
+	}
 }
