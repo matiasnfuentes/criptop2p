@@ -19,6 +19,14 @@ repositories {
 	mavenCentral()
 }
 
+sonarqube {
+	properties {
+		property("sonar.projectKey", "matiasnfuentes_criptop2p")
+		property("sonar.organization", "criptop2p")
+		property("sonar.host.url", "https://sonarcloud.io")
+	}
+}
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
@@ -40,7 +48,6 @@ dependencies {
 	testImplementation(kotlin("test"))
 
 }
-
 
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
