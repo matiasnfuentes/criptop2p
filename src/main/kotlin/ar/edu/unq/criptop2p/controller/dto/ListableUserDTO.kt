@@ -9,7 +9,7 @@ data class ListableUserDTO(
     val operationCount: Int
 ) {
     companion object {
-        // TODO: [CRIP-21] - Agregar reputación y cantidad de operaciones a la lista de usuarios
-        fun fromUser(user: User): ListableUserDTO = ListableUserDTO(user.getFirstName(), user.getLastName(), 0, 0)
+        fun fromUser(user: User): ListableUserDTO =
+            ListableUserDTO(user.getFirstName(), user.getLastName(), user.getTotalTransactions(), user.getReputation())
     }
 }

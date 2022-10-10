@@ -65,7 +65,7 @@ class UserService(
         val key: Key = Keys.hmacShaKeyFor(
             "secret_key_that_must_be_changed_and_must_be_vey_long".toByteArray(StandardCharsets.UTF_8)
         )
-        val jwt = Jwts.builder().setIssuer(issuer).setExpiration(Date(System.currentTimeMillis() + 60 * 1000))
+        val jwt = Jwts.builder().setIssuer(issuer).setExpiration(Date(System.currentTimeMillis() + 60 * 60 * 1000))
             .signWith(key, SignatureAlgorithm.HS256).compact()
 
         return ResponseEntity.ok(jwt)

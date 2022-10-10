@@ -1,9 +1,6 @@
 package ar.edu.unq.criptop2p.controller.dto
 
-import ar.edu.unq.criptop2p.model.CryptoCurrency
-import ar.edu.unq.criptop2p.model.Request
-import ar.edu.unq.criptop2p.model.RequestType
-import ar.edu.unq.criptop2p.model.User
+import ar.edu.unq.criptop2p.model.*
 
 data class RequestDTO(
     val symbol: String,
@@ -19,3 +16,7 @@ data class RequestDTO(
 
     }
 }
+
+data class RequestStatusDTO(
+    val status: RequestStatus
+)

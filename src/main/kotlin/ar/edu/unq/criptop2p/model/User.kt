@@ -22,9 +22,11 @@ class User(
     @Column
     private var walletAddress: String,
     @OneToOne(cascade = [CascadeType.ALL])
-    private var address: Address
-) {
-
+    private var address: Address,
+    @Column
+    private var reputation: Int = 0,
+    @Column
+    private var totalTransactions: Int = 0,
     @Id
     @SequenceGenerator(
         name = "user_sequence",
@@ -36,12 +38,10 @@ class User(
         generator = "user_sequence"
     )
     private var id: Long? = null
+) {
 
-    //TODO: create reputation query
-    fun reputation(): String = "0"
-
-    //TODO: create transactions query
-    fun totalTransactions(): Int = 0
+    fun getTotalTransactions(): Int = this.totalTransactions
+    fun getReputation(): Int = this.reputation
     fun getFirstName(): String = this.firstName
     fun getLastName(): String = this.lastName
     fun getEmail(): String = this.email
@@ -53,6 +53,22 @@ class User(
 
     fun setId(id: Long) {
         this.id = id
+    }
+
+    fun decreaseReputation(amount: Int) {
+        if (this.reputation < amount) {
+            this.reputation = 0
+        } else {
+            this.reputation -= amount
+        }
+    }
+
+    fun increaseReputation(amount: Int) {
+        this.reputation += amount
+    }
+
+    fun increaseTotalTransactionsByOne() {
+        this.totalTransactions += 1
     }
 
     fun comparePassword(password: String): Boolean = BCryptPasswordEncoder().matches(password, this.password)
