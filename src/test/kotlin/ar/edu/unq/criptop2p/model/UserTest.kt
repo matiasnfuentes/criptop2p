@@ -2,26 +2,16 @@ package ar.edu.unq.criptop2p.model
 
 import ar.edu.unq.criptop2p.AbstractTest
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 internal class UserTest : AbstractTest() {
-
-    @Test
-    fun reputation() {
-        //TODO: create reputation query
-    }
-
-    @Test
-    fun totalTransactions() {
-        //TODO: create transactions query
-    }
-
     @Test
     fun getFirstName() {
         val aName = "Random first name"
         val aUser = factory.aUser(firstName = aName)
 
-        Assertions.assertEquals(aName, aUser.getFirstName())
+        assertEquals(aName, aUser.getFirstName())
 
     }
 
@@ -30,7 +20,7 @@ internal class UserTest : AbstractTest() {
         val aName = "Random last name"
         val aUser = factory.aUser(lastName = aName)
 
-        Assertions.assertEquals(aName, aUser.getLastName())
+        assertEquals(aName, aUser.getLastName())
     }
 
     @Test
@@ -38,7 +28,7 @@ internal class UserTest : AbstractTest() {
         val anEmail = "random@email.com"
         val aUser = factory.aUser(email = anEmail)
 
-        Assertions.assertEquals(anEmail, aUser.getEmail())
+        assertEquals(anEmail, aUser.getEmail())
     }
 
     @Test
@@ -46,7 +36,7 @@ internal class UserTest : AbstractTest() {
         val aPassword = "random password"
         val aUser = factory.aUser(password = aPassword)
 
-        Assertions.assertEquals(aPassword, aUser.getPassword())
+        assertEquals(aPassword, aUser.getPassword())
     }
 
     @Test
@@ -54,7 +44,7 @@ internal class UserTest : AbstractTest() {
         val aCvu = "1234567890123456789012"
         val aUser = factory.aUser(cvu = aCvu)
 
-        Assertions.assertEquals(aCvu, aUser.getCvu())
+        assertEquals(aCvu, aUser.getCvu())
     }
 
     @Test
@@ -62,7 +52,7 @@ internal class UserTest : AbstractTest() {
         val aWalletAddress = "12345678"
         val aUser = factory.aUser(walletAddress = aWalletAddress)
 
-        Assertions.assertEquals(aWalletAddress, aUser.getWalletAddress())
+        assertEquals(aWalletAddress, aUser.getWalletAddress())
     }
 
     @Test
@@ -80,7 +70,7 @@ internal class UserTest : AbstractTest() {
 
         aUser.setId(anId)
 
-        Assertions.assertEquals(anId, aUser.getId())
+        assertEquals(anId, aUser.getId())
     }
 
     @Test
@@ -90,7 +80,7 @@ internal class UserTest : AbstractTest() {
 
         aUser.encodePassword()
 
-        Assertions.assertNotEquals(aPassword, aUser.getPassword())
+        assertNotEquals(aPassword, aUser.getPassword())
     }
 
     @Test
@@ -111,8 +101,65 @@ internal class UserTest : AbstractTest() {
 
         aUser.encodePassword()
 
-        Assertions.assertFalse(aUser.comparePassword(anotherPassword))
+        assertFalse(aUser.comparePassword(anotherPassword))
     }
+
+    @Test
+    fun whenAUserIsCreatedItHasNoReputation() {
+        val aUser = factory.aUser()
+
+        assertEquals(0, aUser.getReputation())
+    }
+
+    @Test
+    fun userReputationCanBeIncreased() {
+        val aUser = factory.aUser()
+        val amountToIncrease = 10
+        val expectedReputation = aUser.getReputation() + amountToIncrease
+
+        aUser.increaseReputation(amountToIncrease)
+
+        assertEquals(expectedReputation, aUser.getReputation())
+    }
+
+    @Test
+    fun userReputationCanBeDecreased() {
+        val aUser = factory.aUser(reputation = 20)
+        val amountToDecrease = 10
+        val expectedReputation = aUser.getReputation() - amountToDecrease
+
+        aUser.decreaseReputation(amountToDecrease)
+
+        assertEquals(expectedReputation, aUser.getReputation())
+    }
+
+    @Test
+    fun userReputationCannotBeDecreasedBelowZero() {
+        val aUser = factory.aUser(reputation = 10)
+        val amountToDecrease = 20
+        val expectedReputation = 0
+
+        aUser.decreaseReputation(amountToDecrease)
+
+        assertEquals(expectedReputation, aUser.getReputation())
+    }
+
+    @Test
+    fun whenAUserIsCreatedItHasNoTransactions() {
+        val aUser = factory.aUser()
+
+        assertEquals(0, aUser.getTotalTransactions())
+    }
+
+    @Test
+    fun userTotalTransanctionsCanBeIncreased() {
+        val aUser = factory.aUser()
+
+        aUser.increaseTotalTransactionsByOne()
+
+        assertEquals(1, aUser.getTotalTransactions())
+    }
+
 
 
 }

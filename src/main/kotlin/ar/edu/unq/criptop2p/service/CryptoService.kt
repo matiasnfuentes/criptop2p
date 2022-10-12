@@ -13,6 +13,18 @@ class CryptoService {
     private val restTemplate = RestTemplate()
     private val baseURL = "https://api.binance.com/api/v3"
 
+    fun getPrice(cryptoSymbol: String): Double {
+        checkCryptoSymbol(cryptoSymbol)
+
+        val requestURL = this.baseURL + "/ticker/price?symbol=${cryptoSymbol}"
+
+        val cryptoCurrency = this.restTemplate.getForObject(
+            requestURL, CryptoCurrency::class.java
+        )
+
+        return cryptoCurrency?.getPrice() ?: 0.0
+    }
+
     fun getLast24HsPrices(cryptoSymbol: String): List<CryptoCurrency>? {
         checkCryptoSymbol(cryptoSymbol)
 

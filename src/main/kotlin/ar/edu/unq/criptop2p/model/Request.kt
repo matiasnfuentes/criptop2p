@@ -9,10 +9,16 @@ class Request(
     private val cryptoCurrency: CryptoCurrency,
     @Column
     private val amount: Double,
-    @ManyToOne
-    private val user: User,
+    @ManyToOne(cascade = [CascadeType.REFRESH, CascadeType.MERGE])
+    private val owner: User,
     @Column
-    private val type: RequestType
+    private val type: RequestType,
+    @Column
+    private var status: RequestStatus = RequestStatus.AVAILABLE,
+    @OneToOne
+    private var counterpart: User? = null,
+    @Column
+    private val timeStamp: Date = Date()
 ) {
 
     @Id
@@ -28,37 +34,22 @@ class Request(
     @Column
     private val id: Long? = null
 
-    @Column
-    private var status: RequestStatus = RequestStatus.AVAILABLE
-
-    @Column
-    private val timeStamp: Date = Date()
-
-    @Column
-    private var score: Int = 0
 
     fun getCryptoCurrency(): CryptoCurrency = this.cryptoCurrency
     fun getAmount(): Double = this.amount
-    fun getUser(): User = this.user
+    fun getOwner(): User = this.owner
     fun getType(): RequestType = this.type
     fun getStatus(): RequestStatus = this.status
     fun getTimeStamp(): Date = this.timeStamp
-    fun getScore(): Int = this.score
     fun getId(): Long? = this.id
+    fun getCounterpart(): User? = this.counterpart
+    fun getPriceARS(dollarPrice: Double): Double = this.amount * this.cryptoCurrency.getPrice() * dollarPrice
 
-    //TODO: implement api call to get current ARG value
-    fun priceARG(): Double = 0.0
+    fun setStatus(status : RequestStatus) { this.status = status}
+    fun setCounterpart(counterpart : User) { this.counterpart = counterpart}
 
-    fun waitForConfirmation() {
-        this.status = RequestStatus.WAITING_CONFIRMATION
-    }
-
-    fun cancel() {
-        this.status = RequestStatus.CANCELED
-    }
-
-    fun confirm() {
-        this.status = RequestStatus.CONFIRMED
+    fun updateStatus(nextStatus: RequestStatus, requester: User? = null, currentPrice: Double = 0.0) {
+        this.status.updateStatus(this, nextStatus, requester, currentPrice)
     }
 
 }
