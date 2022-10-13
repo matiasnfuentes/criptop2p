@@ -61,6 +61,11 @@ class RequestService(
             request.getCryptoCurrency().getSymbol()
         ) else 0.0
         request.updateStatus(newStatus, requester, currentPrice)
+        if (request.getStatus() == RequestStatus.CONFIRMED) {
+            var currentArgPrice = this.getDollarPrice()
+            if (currentArgPrice == 0.0) throw Exception("Could not get current ARG value.")
+            request.setPriceArgAtCompletation(currentArgPrice)
+        }
         val updatedRequest = requestRepository.save(request)
         return UpdateRequestDTO.fromRequest(updatedRequest, this.getDollarPrice())
     }

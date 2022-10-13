@@ -20,7 +20,9 @@ class Request(
     @Column
     private val creation_timeStamp: Date = Date(),
     @Column
-    private var finished_timeStamp: Date? = null
+    private var finished_timeStamp: Date? = null,
+    @Column
+    private var priceArgAtCompletation: Double? = null
 ) {
 
     @Id
@@ -48,6 +50,7 @@ class Request(
     fun getCounterpart(): User? = this.counterpart
     fun getPriceARS(dollarPrice: Double): Double = this.amount * this.cryptoCurrency.getPrice() * dollarPrice
 
+    fun setPriceArgAtCompletation(priceArg: Double) { if (this.priceArgAtCompletation == null) { this.priceArgAtCompletation = priceArg } }
     fun setStatus(status : RequestStatus) { this.status = status }
     fun setCounterpart(counterpart : User) { this.counterpart = counterpart}
     fun setFinished_timeStamp() { if (this.finished_timeStamp == null) { this.finished_timeStamp = Date() } }
