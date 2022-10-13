@@ -12,9 +12,9 @@ enum class RequestStatus {
         ) {
             if (request.getOwner()
                     .getId() == requester?.getId()
-            ) throw StatusException("An owner cannot pick its own Request")
+            ) throw StatusException("The owner cannot pick its own Request")
             if (newStatus != ACCEPTED) throw StatusException("The request must be accepted to change its status")
-            if (requester == null) throw StatusException("It should be a counterpart to accept the request")
+            if (requester == null) throw StatusException("The requester does not exist")
             request.setCounterpart(requester)
         }
     },
@@ -31,7 +31,7 @@ enum class RequestStatus {
 
             if (request.getCounterpart()
                     ?.getId() != requester?.getId() || newStatus != WAITING_CONFIRMATION
-            ) throw StatusException("The request status is ACCEPTED, it can only by changed to WAITING_CONFIRMATION by the counterpart ")
+            ) throw StatusException("The request status is ACCEPTED, it can only be changed to WAITING_CONFIRMATION by the counterpart ")
         }
 
         override fun updateStatus(
@@ -57,10 +57,10 @@ enum class RequestStatus {
         ) {
             val owner = request.getOwner()
             if (owner.getId() != requester?.getId() || newStatus != CONFIRMED
-            ) throw StatusException("The request status is WAITING_CONFIRMATION, and it can only by changed to CONFIRMED by the owner ")
+            ) throw StatusException("The request status is WAITING_CONFIRMATION, and it can only be changed to CONFIRMED by the owner ")
 
             owner.increaseTotalTransactionsByOne()
-            val timeElapsedInMinutes = (Date().time - request.getTimeStamp().time) / 1000 / 60
+            val timeElapsedInMinutes = (Date().time - request.getCreationTimeStamp().time) / 1000 / 60
             owner.increaseReputation(if (timeElapsedInMinutes < 30) 10 else 5)
         }
     },
@@ -111,7 +111,9 @@ enum class RequestStatus {
         requester: User? = null,
         currentPrice: Double = 0.0
     ) {
+        if (newStatus == CANCELED || newStatus == CONFIRMED) request.setFinished_timeStamp()
         if (newStatus == CANCELED) return this.cancel(request, requester)
+
         this.processUpdate(request, newStatus, requester, currentPrice)
         request.setStatus(newStatus)
     }

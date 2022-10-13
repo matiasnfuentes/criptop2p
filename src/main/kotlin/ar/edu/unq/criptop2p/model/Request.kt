@@ -18,7 +18,9 @@ class Request(
     @OneToOne
     private var counterpart: User? = null,
     @Column
-    private val timeStamp: Date = Date()
+    private val creation_timeStamp: Date = Date(),
+    @Column
+    private var finished_timeStamp: Date? = null
 ) {
 
     @Id
@@ -40,13 +42,15 @@ class Request(
     fun getOwner(): User = this.owner
     fun getType(): RequestType = this.type
     fun getStatus(): RequestStatus = this.status
-    fun getTimeStamp(): Date = this.timeStamp
+    fun getCreationTimeStamp(): Date = this.creation_timeStamp
+    fun getFinishedTimeStamp(): Date? = this.finished_timeStamp
     fun getId(): Long? = this.id
     fun getCounterpart(): User? = this.counterpart
     fun getPriceARS(dollarPrice: Double): Double = this.amount * this.cryptoCurrency.getPrice() * dollarPrice
 
-    fun setStatus(status : RequestStatus) { this.status = status}
+    fun setStatus(status : RequestStatus) { this.status = status }
     fun setCounterpart(counterpart : User) { this.counterpart = counterpart}
+    fun setFinished_timeStamp() { if (this.finished_timeStamp == null) { this.finished_timeStamp = Date() } }
 
     fun updateStatus(nextStatus: RequestStatus, requester: User? = null, currentPrice: Double = 0.0) {
         this.status.updateStatus(this, nextStatus, requester, currentPrice)
