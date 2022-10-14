@@ -46,6 +46,7 @@ class Request(
     fun getStatus(): RequestStatus = this.status
     fun getCreationTimeStamp(): Date = this.creation_timeStamp
     fun getFinishedTimeStamp(): Date? = this.finished_timeStamp
+    fun getPriceArgAtCompletation(): Double = this.priceArgAtCompletation ?: 0.0
     fun getId(): Long? = this.id
     fun getCounterpart(): User? = this.counterpart
     fun getPriceARS(dollarPrice: Double): Double = this.amount * this.cryptoCurrency.getPrice() * dollarPrice
