@@ -64,4 +64,8 @@ class CryptoService {
             "Please provide a valid symbol"
         )
     }
+
+    fun getSymbolList():List<String>{
+        return CryptoCurrency.symbolList
+    }
 }
