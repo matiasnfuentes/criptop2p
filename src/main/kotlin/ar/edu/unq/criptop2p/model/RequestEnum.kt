@@ -111,7 +111,7 @@ enum class RequestStatus {
         requester: User? = null,
         currentPrice: Double = 0.0
     ) {
-        if (newStatus == CANCELED || newStatus == CONFIRMED) request.setFinished_timeStamp()
+        if (newStatus == CANCELED || newStatus == CONFIRMED) request.setFinishedTimeStamp()
         if (newStatus == CANCELED) return this.cancel(request, requester)
 
         this.processUpdate(request, newStatus, requester, currentPrice)

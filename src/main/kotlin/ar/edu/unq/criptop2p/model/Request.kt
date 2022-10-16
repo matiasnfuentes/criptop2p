@@ -18,9 +18,9 @@ class Request(
     @OneToOne
     private var counterpart: User? = null,
     @Column
-    private val creation_timeStamp: Date = Date(),
+    private val creationTimeStamp: Date = Date(),
     @Column
-    private var finished_timeStamp: Date? = null,
+    private var finishedTimeStamp: Date? = null,
     @Column
     private var priceArgAtCompletation: Double? = null
 ) {
@@ -44,8 +44,8 @@ class Request(
     fun getOwner(): User = this.owner
     fun getType(): RequestType = this.type
     fun getStatus(): RequestStatus = this.status
-    fun getCreationTimeStamp(): Date = this.creation_timeStamp
-    fun getFinishedTimeStamp(): Date? = this.finished_timeStamp
+    fun getCreationTimeStamp(): Date = this.creationTimeStamp
+    fun getFinishedTimeStamp(): Date? = this.finishedTimeStamp
     fun getPriceArgAtCompletation(): Double = this.priceArgAtCompletation ?: 0.0
     fun getId(): Long? = this.id
     fun getCounterpart(): User? = this.counterpart
@@ -54,7 +54,7 @@ class Request(
     fun setPriceArgAtCompletation(priceArg: Double) { if (this.priceArgAtCompletation == null) { this.priceArgAtCompletation = priceArg } }
     fun setStatus(status : RequestStatus) { this.status = status }
     fun setCounterpart(counterpart : User) { this.counterpart = counterpart}
-    fun setFinished_timeStamp() { if (this.finished_timeStamp == null) { this.finished_timeStamp = Date() } }
+    fun setFinishedTimeStamp() { if (this.finishedTimeStamp == null) { this.finishedTimeStamp = Date() } }
 
     fun updateStatus(nextStatus: RequestStatus, requester: User? = null, currentPrice: Double = 0.0) {
         this.status.updateStatus(this, nextStatus, requester, currentPrice)

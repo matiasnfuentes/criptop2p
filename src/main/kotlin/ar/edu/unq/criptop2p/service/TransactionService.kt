@@ -55,14 +55,8 @@ class TransactionService (
         return result
     }
 
-    private fun totalOperated(user: User, requests: List<Request>): Pair<Double, Double> {
-        var total = Pair(0.0, 0.0)
-        for (r in requests) {
-            val operated = operated(user, r)
-            total = Pair(total.first + operated.first, total.second + operated.second)
-        }
-        return total
-    }
+    private fun totalOperated(user: User, requests: List<Request>): Pair<Double, Double> =
+            requests.map { operated(user, it) } .fold(Pair(0.0, 0.0)) { acc, next -> Pair(acc.first + next.first, acc.second + next.second) }
 
     fun operated(user: User, request: Request): Pair<Double, Double> {
         var result = Pair(0.0, 0.0)
@@ -90,13 +84,7 @@ class TransactionService (
        return result
     }
 
-    private fun totalAmountOperated(user: User, requests: List<Request>): Double {
-        var total = 0.0
-        for (r in requests) {
-            total += amountOperated(user, r)
-        }
-        return total
-    }
+    private fun totalAmountOperated(user: User, requests: List<Request>): Double = requests.fold(0.0) { acc, next -> acc + amountOperated(user, next) }
 
     fun amountOperated(user: User, request: Request): Double {
         var result = 0.0
