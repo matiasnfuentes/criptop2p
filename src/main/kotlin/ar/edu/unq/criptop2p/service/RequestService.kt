@@ -19,7 +19,7 @@ class RequestService(
     @Autowired
     private val requestRepository: RequestRepository,
     @Autowired
-    private val cryptoService: CryptoService,
+    private val cryptoService: CryptoService
 ) {
 
     fun save(requestDto: RequestDTO, user: User?): ListableRequestDTO {
@@ -61,11 +61,16 @@ class RequestService(
             request.getCryptoCurrency().getSymbol()
         ) else 0.0
         request.updateStatus(newStatus, requester, currentPrice)
+        if (request.getStatus() == RequestStatus.CONFIRMED) {
+            val currentArgPrice = this.getDollarPrice()
+            if (currentArgPrice == 0.0) throw Exception("Could not get current ARG value.")
+            request.setPriceArgAtCompletation(currentArgPrice)
+        }
         val updatedRequest = requestRepository.save(request)
         return UpdateRequestDTO.fromRequest(updatedRequest, this.getDollarPrice())
     }
 
-    private fun getDollarPrice(): Double {
+    fun getDollarPrice(): Double {
         val prices = RestTemplate().getForObject(
             "https://dolarsi.com/api/api.php?type=valoresprincipales",
             Array<DollarCurrency>::class.java

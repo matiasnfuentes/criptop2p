@@ -12,9 +12,9 @@ enum class RequestStatus {
         ) {
             if (request.getOwner()
                     .getId() == requester?.getId()
-            ) throw StatusException("An owner cannot pick its own Request")
+            ) throw StatusException("The owner cannot pick its own Request")
             if (newStatus != ACCEPTED) throw StatusException("The request must be accepted to change its status")
-            if (requester == null) throw StatusException("It should be a counterpart to accept the request")
+            if (requester == null) throw StatusException("The requester does not exist")
             request.setCounterpart(requester)
         }
     },
@@ -31,7 +31,7 @@ enum class RequestStatus {
 
             if (request.getCounterpart()
                     ?.getId() != requester?.getId() || newStatus != WAITING_CONFIRMATION
-            ) throw StatusException("The request status is ACCEPTED, it can only by changed to WAITING_CONFIRMATION by the counterpart ")
+            ) throw StatusException("The request status is ACCEPTED, it can only be changed to WAITING_CONFIRMATION by the counterpart ")
         }
 
         override fun updateStatus(
@@ -57,10 +57,11 @@ enum class RequestStatus {
         ) {
             val owner = request.getOwner()
             if (owner.getId() != requester?.getId() || newStatus != CONFIRMED
-            ) throw StatusException("The request status is WAITING_CONFIRMATION, and it can only by changed to CONFIRMED by the owner ")
+            ) throw StatusException("The request status is WAITING_CONFIRMATION, and it can only be changed to CONFIRMED by the owner ")
 
+            request.setFinishedTimeStamp()
             owner.increaseTotalTransactionsByOne()
-            val timeElapsedInMinutes = (Date().time - request.getTimeStamp().time) / 1000 / 60
+            val timeElapsedInMinutes = (Date().time - request.getCreationTimeStamp().time) / 1000 / 60
             owner.increaseReputation(if (timeElapsedInMinutes < 30) 10 else 5)
         }
     },
@@ -99,6 +100,7 @@ enum class RequestStatus {
     ) {
         if (this == AVAILABLE || this == ACCEPTED) {
             request.setStatus(CANCELED)
+            request.setFinishedTimeStamp()
             requester?.decreaseReputation(20)
         } else {
             throw StatusException("The request cannot be canceled at this point")
@@ -112,6 +114,7 @@ enum class RequestStatus {
         currentPrice: Double = 0.0
     ) {
         if (newStatus == CANCELED) return this.cancel(request, requester)
+
         this.processUpdate(request, newStatus, requester, currentPrice)
         request.setStatus(newStatus)
     }
@@ -122,12 +125,29 @@ enum class RequestType {
     BUY {
         override fun exceedsPriceGap(currentPrice: Double, request: Request) : Boolean =
             currentPrice > (request.getCryptoCurrency().getPrice() * 1.05)
+
     },
     SELL {
         override fun exceedsPriceGap(currentPrice: Double, request: Request) : Boolean =
             currentPrice < (request.getCryptoCurrency().getPrice() * 0.95)
+
+        override fun usdOperated(request: Request) = - super.usdOperated(request)
+        override fun getAmount(request: Request): Double = - request.getAmount()
+
     };
 
     abstract fun exceedsPriceGap(currentPrice: Double, request: Request) : Boolean
+
+    private fun getFor(user:User, request:Request, value:Double) =
+            if (user.getId() == request.getOwner().getId()) value else - value
+
+    open fun getAmount(request: Request): Double = request.getAmount()
+    fun amountOperated(request: Request, user: User) = getFor(user, request, getAmount(request))
+
+    open fun usdOperated(request: Request) = getAmount(request) * request.getCryptoCurrency().getPrice()
+    fun priceOperated(request: Request, user: User): Pair<Double, Double> {
+        val usdOperated = getFor(user, request, usdOperated(request))
+        return Pair(usdOperated, usdOperated * request.getPriceArgAtCompletation())
+    }
 
 }

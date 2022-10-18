@@ -18,7 +18,11 @@ class Request(
     @OneToOne
     private var counterpart: User? = null,
     @Column
-    private val timeStamp: Date = Date()
+    private val creationTimeStamp: Date = Date(),
+    @Column
+    private var finishedTimeStamp: Date? = null,
+    @Column
+    private var priceArgAtCompletation: Double? = null
 ) {
 
     @Id
@@ -40,16 +44,23 @@ class Request(
     fun getOwner(): User = this.owner
     fun getType(): RequestType = this.type
     fun getStatus(): RequestStatus = this.status
-    fun getTimeStamp(): Date = this.timeStamp
+    fun getCreationTimeStamp(): Date = this.creationTimeStamp
+    fun getFinishedTimeStamp(): Date? = this.finishedTimeStamp
+    fun getPriceArgAtCompletation(): Double = this.priceArgAtCompletation ?: 0.0
     fun getId(): Long? = this.id
     fun getCounterpart(): User? = this.counterpart
     fun getPriceARS(dollarPrice: Double): Double = this.amount * this.cryptoCurrency.getPrice() * dollarPrice
 
-    fun setStatus(status : RequestStatus) { this.status = status}
-    fun setCounterpart(counterpart : User) { this.counterpart = counterpart}
+    fun setPriceArgAtCompletation(priceArg: Double) { if (this.priceArgAtCompletation == null) { this.priceArgAtCompletation = priceArg } }
+    fun setStatus(status : RequestStatus) { this.status = status }
+    fun setCounterpart(counterpart : User) { this.counterpart = counterpart }
+    fun setFinishedTimeStamp() { if (this.finishedTimeStamp == null) { this.finishedTimeStamp = Date() } }
 
     fun updateStatus(nextStatus: RequestStatus, requester: User? = null, currentPrice: Double = 0.0) {
         this.status.updateStatus(this, nextStatus, requester, currentPrice)
     }
+
+    fun amountOperated(user: User): Double = this.getType().amountOperated(this, user)
+    fun priceOperated(user: User): Pair<Double, Double> = this.getType().priceOperated(this, user)
 
 }

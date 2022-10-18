@@ -24,6 +24,7 @@ sonarqube {
 		property("sonar.projectKey", "matiasnfuentes_criptop2p")
 		property("sonar.organization", "criptop2p")
 		property("sonar.host.url", "https://sonarcloud.io")
+		property("sonar.sources", "src/main/kotlin/ar/edu/unq/criptop2p/model")
 	}
 }
 

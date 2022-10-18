@@ -10,7 +10,7 @@ class ListableRequestDTO(
     val cryptoCurrency: CryptoCurrency,
     val amount: Double,
     val priceARG: Double,
-    val nameLastname: String,
+    val lastnameName: String,
     val userOperations: Int,
     val userReputation: String,
     val timeStamp: Date,
@@ -34,7 +34,7 @@ class ListableRequestDTO(
                 owner.getLastName() + "," + owner.getFirstName(),
                 totalTransactions,
                 userReputation,
-                request.getTimeStamp(),
+                request.getCreationTimeStamp(),
                 request.getId()
             )
         }
