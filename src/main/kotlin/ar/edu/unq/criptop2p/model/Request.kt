@@ -53,11 +53,14 @@ class Request(
 
     fun setPriceArgAtCompletation(priceArg: Double) { if (this.priceArgAtCompletation == null) { this.priceArgAtCompletation = priceArg } }
     fun setStatus(status : RequestStatus) { this.status = status }
-    fun setCounterpart(counterpart : User) { this.counterpart = counterpart}
+    fun setCounterpart(counterpart : User) { this.counterpart = counterpart }
     fun setFinishedTimeStamp() { if (this.finishedTimeStamp == null) { this.finishedTimeStamp = Date() } }
 
     fun updateStatus(nextStatus: RequestStatus, requester: User? = null, currentPrice: Double = 0.0) {
         this.status.updateStatus(this, nextStatus, requester, currentPrice)
     }
+
+    fun amountOperated(user: User): Double = this.getType().amountOperated(this, user)
+    fun priceOperated(user: User): Pair<Double, Double> = this.getType().priceOperated(this, user)
 
 }

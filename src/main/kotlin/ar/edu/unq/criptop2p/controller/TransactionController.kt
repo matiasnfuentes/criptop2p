@@ -22,14 +22,14 @@ class TransactionController(
 
     @Operation(summary="API to list a summary of a user transactions", description="This endpoint give a detail all the user transaction completed.")
     @GetMapping("/{userId}")
-    fun getUserTransaction(
+    fun getUserTransactions(
             @PathVariable userId: Long,
             @RequestHeader("secret_token") secretToken: String,
             @RequestBody body: DateIntervalDTO
     ): ResponseEntity<TotalTransactionReportDTO> {
         userService.authenticate(secretToken)
         val user = userService.findById(userId)
-        return ResponseEntity.ok().body(transactionService.getUserTransaction(user, body.dateFrom, body.dateTo))
+        return ResponseEntity.ok().body(transactionService.getUserTransactions(user, body.dateFrom, body.dateTo))
     }
 
 }

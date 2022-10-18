@@ -3,6 +3,7 @@ package ar.edu.unq.criptop2p.persistance.mockedData
 import ar.edu.unq.criptop2p.model.*
 import ar.edu.unq.criptop2p.persistance.RequestRepository
 import ar.edu.unq.criptop2p.persistance.UserRepository
+import ar.edu.unq.criptop2p.service.RequestService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -12,7 +13,7 @@ import java.util.*
 class Config {
 
     @Bean
-    fun run(userRepository: UserRepository, requestRepository: RequestRepository): CommandLineRunner {
+    fun run(userRepository: UserRepository, requestRepository: RequestRepository, requestService:RequestService): CommandLineRunner {
         return CommandLineRunner { _ ->
 
             // Setting up users
@@ -98,7 +99,7 @@ class Config {
             )
             val request4 = Request(
                 CryptoCurrency(
-                    145.05,
+                    4.465,
                     "CAKEUSDT",
                     currentDate
                 ),
@@ -107,7 +108,42 @@ class Config {
                 RequestType.BUY
             )
 
-            requestRepository.saveAll(listOf(request1, request2, request3, request4))
+            val request5 = Request(
+                    CryptoCurrency(
+                            4.465,
+                            "CAKEUSDT",
+                            currentDate
+                    ),
+                    60.0,
+                    richardRoe,
+                    RequestType.BUY
+            )
+
+            val request6 = Request(
+                    CryptoCurrency(
+                            4.465,
+                            "CAKEUSDT",
+                            currentDate
+                    ),
+                    25.0,
+                    richardRoe,
+                    RequestType.SELL           )
+
+            requestRepository.saveAll(listOf(request1, request2, request3, request4, request5, request6))
+
+            requestService.updateStatus(4, RequestStatus.ACCEPTED, janePoe)
+            requestService.updateStatus(5, RequestStatus.ACCEPTED, janePoe)
+            requestService.updateStatus(6, RequestStatus.ACCEPTED, janePoe)
+
+
+            requestService.updateStatus(4, RequestStatus.WAITING_CONFIRMATION, janePoe)
+            requestService.updateStatus(5, RequestStatus.WAITING_CONFIRMATION, janePoe)
+            requestService.updateStatus(6, RequestStatus.WAITING_CONFIRMATION, janePoe)
+
+            requestService.updateStatus(4, RequestStatus.CONFIRMED, richardRoe)
+            requestService.updateStatus(5, RequestStatus.CONFIRMED, richardRoe)
+            requestService.updateStatus(6, RequestStatus.CONFIRMED, richardRoe)
+
         }
     }
 }

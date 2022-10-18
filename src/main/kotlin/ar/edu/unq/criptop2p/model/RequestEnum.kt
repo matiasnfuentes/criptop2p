@@ -59,6 +59,7 @@ enum class RequestStatus {
             if (owner.getId() != requester?.getId() || newStatus != CONFIRMED
             ) throw StatusException("The request status is WAITING_CONFIRMATION, and it can only be changed to CONFIRMED by the owner ")
 
+            request.setFinishedTimeStamp()
             owner.increaseTotalTransactionsByOne()
             val timeElapsedInMinutes = (Date().time - request.getCreationTimeStamp().time) / 1000 / 60
             owner.increaseReputation(if (timeElapsedInMinutes < 30) 10 else 5)
@@ -99,6 +100,7 @@ enum class RequestStatus {
     ) {
         if (this == AVAILABLE || this == ACCEPTED) {
             request.setStatus(CANCELED)
+            request.setFinishedTimeStamp()
             requester?.decreaseReputation(20)
         } else {
             throw StatusException("The request cannot be canceled at this point")
@@ -111,7 +113,6 @@ enum class RequestStatus {
         requester: User? = null,
         currentPrice: Double = 0.0
     ) {
-        if (newStatus == CANCELED || newStatus == CONFIRMED) request.setFinishedTimeStamp()
         if (newStatus == CANCELED) return this.cancel(request, requester)
 
         this.processUpdate(request, newStatus, requester, currentPrice)
@@ -124,12 +125,29 @@ enum class RequestType {
     BUY {
         override fun exceedsPriceGap(currentPrice: Double, request: Request) : Boolean =
             currentPrice > (request.getCryptoCurrency().getPrice() * 1.05)
+
     },
     SELL {
         override fun exceedsPriceGap(currentPrice: Double, request: Request) : Boolean =
             currentPrice < (request.getCryptoCurrency().getPrice() * 0.95)
+
+        override fun usdOperated(request: Request) = - super.usdOperated(request)
+        override fun getAmount(request: Request): Double = - request.getAmount()
+
     };
 
     abstract fun exceedsPriceGap(currentPrice: Double, request: Request) : Boolean
+
+    private fun getFor(user:User, request:Request, value:Double) =
+            if (user.getId() == request.getOwner().getId()) value else - value
+
+    open fun getAmount(request: Request): Double = request.getAmount()
+    fun amountOperated(request: Request, user: User) = getFor(user, request, getAmount(request))
+
+    open fun usdOperated(request: Request) = getAmount(request) * request.getCryptoCurrency().getPrice()
+    fun priceOperated(request: Request, user: User): Pair<Double, Double> {
+        val usdOperated = getFor(user, request, usdOperated(request))
+        return Pair(usdOperated, usdOperated * request.getPriceArgAtCompletation())
+    }
 
 }
