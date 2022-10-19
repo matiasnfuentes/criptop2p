@@ -131,7 +131,6 @@ enum class RequestType {
         override fun exceedsPriceGap(currentPrice: Double, request: Request) : Boolean =
             currentPrice < (request.getCryptoCurrency().getPrice() * 0.95)
 
-        override fun usdOperated(request: Request) = - super.usdOperated(request)
         override fun getAmount(request: Request): Double = - request.getAmount()
 
     };
@@ -144,7 +143,7 @@ enum class RequestType {
     open fun getAmount(request: Request): Double = request.getAmount()
     fun amountOperated(request: Request, user: User) = getFor(user, request, getAmount(request))
 
-    open fun usdOperated(request: Request) = getAmount(request) * request.getCryptoCurrency().getPrice()
+    private fun usdOperated(request: Request) = getAmount(request) * request.getCryptoCurrency().getPrice()
     fun priceOperated(request: Request, user: User): Pair<Double, Double> {
         val usdOperated = getFor(user, request, usdOperated(request))
         return Pair(usdOperated, usdOperated * request.getPriceArgAtCompletation())
