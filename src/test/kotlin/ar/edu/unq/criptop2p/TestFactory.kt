@@ -31,8 +31,9 @@ class TestFactory {
         type: RequestType = RequestType.BUY,
         status: RequestStatus = RequestStatus.AVAILABLE,
         counterpart: User? = null,
-        timestamp: Date = Date()
-    ) = Request(cryptoCurrency, amount, owner, type, status, counterpart, timestamp)
+        timestamp: Date = Date(),
+        finishedTimeStamp: Date = Date()
+    ) = Request(cryptoCurrency, amount, owner, type, status, counterpart, timestamp, finishedTimeStamp)
 
     fun aBuyRequest(
         cryptoCurrency: CryptoCurrency = aCryptoCurrency(),
@@ -65,8 +66,24 @@ class TestFactory {
     fun aConfirmedRequest(
         cryptoCurrency: CryptoCurrency = aCryptoCurrency(),
         amount: Double = 10.0,
+        owner: User = aUser(id = 0),
         type: RequestType = RequestType.BUY,
-        timestamp: Date = Date()
-    ) = Request(cryptoCurrency, amount, aUser(id = 0), type, RequestStatus.CONFIRMED, aUser(id = 1), timestamp)
+        counterpart: User = aUser(id = 1),
+        timestamp: Date = Date(),
+        finishedTimeStamp: Date = Date(),
+        priceArgAtCompletation: Double? = null
+    ) = Request(cryptoCurrency, amount, owner, type, RequestStatus.CONFIRMED, counterpart, timestamp, finishedTimeStamp, priceArgAtCompletation)
+
+    fun aCanceledRequest(
+            cryptoCurrency: CryptoCurrency = aCryptoCurrency(),
+            amount: Double = 10.0,
+            owner: User = aUser(id = 0),
+            type: RequestType = RequestType.BUY,
+            counterpart: User = aUser(id = 1),
+            timestamp: Date = Date(),
+            finishedTimeStamp: Date = Date(),
+            priceArgAtCompletation: Double? = null
+    ) = Request(cryptoCurrency, amount, owner, type, RequestStatus.CANCELED, counterpart, timestamp, finishedTimeStamp, priceArgAtCompletation)
+
 
 }

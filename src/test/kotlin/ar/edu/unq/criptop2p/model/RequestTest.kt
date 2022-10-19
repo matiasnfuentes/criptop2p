@@ -42,6 +42,15 @@ internal class RequestTest : AbstractTest() {
     }
 
     @Test
+    fun getFinishedTimeStamp() {
+        val now = Date()
+        val aRequest = factory.aRequest(finishedTimeStamp = now)
+
+        assertEquals(now, aRequest.getFinishedTimeStamp())
+
+    }
+
+    @Test
     fun `request default status is AVAILABLE`() {
         val requestDefaultStatus = RequestStatus.AVAILABLE
         val aRequest = factory.aRequest()
@@ -312,7 +321,23 @@ internal class RequestTest : AbstractTest() {
         invalidStatuses.forEach { assertThrows<StatusException> { aConfirmedRequest.updateStatus(it, owner) } }
     }
 
+    /* ------------------------- */
+    /* REQUEST STATUS = CONFIRMED */
+    /* ------------------------- */
 
+    @Test
+    fun `A canceled Request cannot be changed to another status`() {
+        val aCanceldRequest = factory.aCanceledRequest()
+        val owner = factory.aUser()
+        val invalidStatuses = listOf(
+                RequestStatus.ACCEPTED,
+                RequestStatus.WAITING_CONFIRMATION,
+                RequestStatus.AVAILABLE,
+                RequestStatus.CANCELED
+        )
 
+        invalidStatuses.forEach { assertThrows<StatusException> { aCanceldRequest.updateStatus(it, owner) } }
+
+    }
 
 }
