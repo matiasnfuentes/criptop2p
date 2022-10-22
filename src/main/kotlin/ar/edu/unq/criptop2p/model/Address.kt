@@ -34,4 +34,6 @@ class Address(
     fun getNumber(): Int = this.number
     fun getCity(): String = this.city
 
+    fun getId(): Long? = this.id
+
 }
