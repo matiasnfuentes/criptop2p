@@ -1,6 +1,7 @@
 package ar.edu.unq.criptop2p.service
 
 import ar.edu.unq.criptop2p.model.CryptoCurrency
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
@@ -8,9 +9,8 @@ import org.springframework.web.server.ResponseStatusException
 import java.util.*
 
 @Service
-class CryptoService {
+class CryptoService(@Autowired private val restTemplate: RestTemplate) {
 
-    private val restTemplate = RestTemplate()
     private val baseURL = "https://api.binance.com/api/v3"
 
     fun getPrice(cryptoSymbol: String): Double {
