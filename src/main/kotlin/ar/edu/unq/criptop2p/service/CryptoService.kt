@@ -69,3 +69,4 @@ class CryptoService {
         return CryptoCurrency.symbolList
     }
 }
+/* test */
