@@ -1,4 +1,27 @@
 ---------------------------------------------------------------------
+TAG ENTREGA2
+---------------------------------------------------------------------
+NEW FEATURES:
+    Core:
+        Testing integral de userController y cryptoController
+        Aumentado el coverage de unit test del modelo a casi 100 %
+        Agregado escaneo de test coverage en SonarCloud
+        Se añaden datos "fake" en la configuración de springboot para probar la app.
+        Documentation de Endpoints (APIs) con Swagger (v3)
+
+    Funcionalidad:
+        Informar el volumen de cripto activos operado por un usuario entre dos fechas.
+        Crear y procesar una solicitud de compra / venta
+        Listado de intenciones activas de compra / venta
+        Calculo de reputación y cantidad de operaciones en el listado de usuarios
+
+NOTES
+    Entrega completa, ninguna funcionalidad faltante.
+
+KNOWN ISSUES
+    Ninguno de nuestro conocimiento
+
+---------------------------------------------------------------------
 TAG ENTREGA1
 ---------------------------------------------------------------------
 NEW FEATURES:
