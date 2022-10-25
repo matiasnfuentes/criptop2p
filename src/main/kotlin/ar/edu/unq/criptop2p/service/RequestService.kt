@@ -76,7 +76,8 @@ class RequestService(
             Array<DollarCurrency>::class.java
         )
 
-        return prices?.find { it.casa.nombre == "Dolar Blue" }?.casa?.sellPrice ?: 0.0
+        return prices?.find { it.casa.nombre == "Dolar Blue" }?.casa?.sellPrice
+            ?: throw Exception("Could not get current dollar price.")
     }
 
     private fun checkIFZeroOrLess(number: Double, exceptionMessage: String) {

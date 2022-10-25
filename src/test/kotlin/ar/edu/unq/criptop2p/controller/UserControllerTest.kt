@@ -1,5 +1,6 @@
 package ar.edu.unq.criptop2p.controller
 
+import ar.edu.unq.criptop2p.AbstractTest
 import ar.edu.unq.criptop2p.controller.dto.LoginDTO
 import ar.edu.unq.criptop2p.controller.dto.UserDTO
 import ar.edu.unq.criptop2p.model.Address
@@ -23,28 +24,18 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 @AutoConfigureMockMvc
 @SpringBootTest
 @ActiveProfiles(profiles = ["test"])
-class userServiceTest (
-        @Autowired
-        private val mvc: MockMvc,
-        @Autowired
-        private val userController: UserController,
-        @Autowired
-        private val userRepository: UserRepository,
-        @Autowired
-        private val userService: UserService
-) {
+internal class UserControllerTest(
+    @Autowired
+    private val mvc: MockMvc,
+    @Autowired
+    private val userController: UserController,
+    @Autowired
+    private val userRepository: UserRepository,
+    @Autowired
+    private val userService: UserService
+) : AbstractTest() {
 
-    private val anEmail = "test123@email.com"
-    private val aUserDTO = UserDTO("testFirstName",
-            "testLastName",
-            anEmail,
-            "AsDtest456$",
-            "1234567890123456789015",
-            "12345678",
-            Address("Street",
-                    401,
-                    "Avellaneda")
-    )
+    private val aUserDTO = this.factory.aUserDTO()
 
     private val aLoginDTO = LoginDTO(aUserDTO.email, aUserDTO.password)
 
@@ -55,13 +46,15 @@ class userServiceTest (
     @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     fun register() {
-        val mvcPerform = mvc.perform( MockMvcRequestBuilders
-                                .post("/api/user/register")
-                                .content( ObjectMapper().writeValueAsString(aUserDTO) )
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
+        val mvcPerform = mvc.perform(
+            MockMvcRequestBuilders
+                .post("/api/user/register")
+                .content(ObjectMapper().writeValueAsString(aUserDTO))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+        )
 
-        val aSavedUser = userRepository.findByEmail(anEmail)
+        val aSavedUser = userRepository.findByEmail(aUserDTO.email)
 
         mvcPerform.andExpect(status().isOk)
         assert(aSavedUser != null)
