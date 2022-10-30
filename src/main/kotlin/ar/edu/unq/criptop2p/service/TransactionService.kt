@@ -26,15 +26,15 @@ class TransactionService (
         if (dateFrom > dateTo) {throw ResponseStatusException(HttpStatus.BAD_REQUEST, "dateFrom should be before dateTo")}
 
         val allUserRequest = requestRepository.findAllUserCompletedTransactions(user.get(), dateFrom, dateTo)
-        val totalPriceOperated = totalPriceOperated(user.get(), allUserRequest)
-        val transactionSummary = transactionSummary(user, allUserRequest)
+        val totalPriceOperated = totalPriceOperated(allUserRequest)
+        val transactionSummary = transactionSummary(allUserRequest)
 
         return TotalTransactionReportDTO( totalPriceOperated.first,
                                           totalPriceOperated.second,
                                           transactionSummary)
     }
 
-    private fun transactionSummary(user: Optional<User>, allUserRequest: List<Request>): List<CurrencyTransactionReportDTO> {
+    private fun transactionSummary(allUserRequest: List<Request>): List<CurrencyTransactionReportDTO> {
         val result = arrayListOf<CurrencyTransactionReportDTO>()
 
         for (symbol in cryptoService.getSymbolList()){
@@ -42,7 +42,7 @@ class TransactionService (
 
             if (currencyList.isEmpty()) continue
 
-            val totalAmountOperated = totalAmountOperated(user.get(), currencyList)
+            val totalAmountOperated = totalAmountOperated(currencyList)
             val currentUSDPrice = cryptoService.getPrice(symbol)
             val currentARGPrice = requestService.getDollarPrice()
             result.add(CurrencyTransactionReportDTO( symbol,
@@ -54,8 +54,8 @@ class TransactionService (
         return result
     }
 
-    private fun totalPriceOperated(user: User, requests: List<Request>): Pair<Double, Double> =
-            requests.map { it.priceOperated(user) } .fold(Pair(0.0, 0.0)) { acc, next -> Pair(acc.first + next.first, acc.second + next.second) }
-    private fun totalAmountOperated(user: User, requests: List<Request>): Double = requests.fold(0.0) { acc, next -> acc + next.amountOperated(user) }
+    private fun totalPriceOperated(requests: List<Request>): Pair<Double, Double> =
+            requests.map { it.priceOperated() } .fold(Pair(0.0, 0.0)) { acc, next -> Pair(acc.first + next.first, acc.second + next.second) }
+    private fun totalAmountOperated(requests: List<Request>): Double = requests.fold(0.0) { acc, next -> acc + next.getAmount() }
 
 }

@@ -18,10 +18,8 @@ internal class TransactionTest : AbstractTest() {
                                                              owner = aUserOwner,
                                                              counterpart = aUserCounterpart)
 
-        assertEquals(50.0 , confirmedRequestBuy.amountOperated(aUserOwner))
-        assertEquals(-50.0, confirmedRequestBuy.amountOperated(aUserCounterpart))
-        assertEquals(-10.0, confirmedRequestSell.amountOperated(aUserOwner))
-        assertEquals(10.0, confirmedRequestSell.amountOperated(aUserCounterpart))
+        assertEquals(50.0 , confirmedRequestBuy.getAmount())
+        assertEquals(10.0, confirmedRequestSell.getAmount())
 
     }
 
@@ -43,10 +41,8 @@ internal class TransactionTest : AbstractTest() {
                                                              priceArgAtCompletation = 200.0)
 
 
-        assertEquals(Pair(500.0, 100000.0), confirmedRequestBuy.priceOperated(aUserOwner))
-        assertEquals(Pair(-500.0, -100000.0), confirmedRequestBuy.priceOperated(aUserCounterpart))
-        assertEquals(Pair(-100.0, -20000.0), confirmedRequestSell.priceOperated(aUserOwner))
-        assertEquals(Pair(100.0, 20000.0), confirmedRequestSell.priceOperated(aUserCounterpart))
+        assertEquals(Pair(500.0, 100000.0), confirmedRequestBuy.priceOperated())
+        assertEquals(Pair(100.0, 20000.0), confirmedRequestSell.priceOperated())
     }
 
 }
