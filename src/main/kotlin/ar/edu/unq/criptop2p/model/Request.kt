@@ -60,7 +60,6 @@ class Request(
         this.status.updateStatus(this, nextStatus, requester, currentPrice)
     }
 
-    fun amountOperated(user: User): Double = this.getType().amountOperated(this, user)
-    fun priceOperated(user: User): Pair<Double, Double> = this.getType().priceOperated(this, user)
+    fun priceOperated(): Pair<Double, Double> = this.getType().priceOperated(this)
 
 }
