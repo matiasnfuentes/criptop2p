@@ -1,4 +1,4 @@
-package ar.edu.unq.criptop2p.persistance.mockedData
+package ar.edu.unq.criptop2p.mockedData
 
 import ar.edu.unq.criptop2p.model.*
 import ar.edu.unq.criptop2p.persistance.RequestRepository

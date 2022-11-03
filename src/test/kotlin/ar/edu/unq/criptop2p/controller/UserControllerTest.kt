@@ -2,9 +2,6 @@ package ar.edu.unq.criptop2p.controller
 
 import ar.edu.unq.criptop2p.AbstractTest
 import ar.edu.unq.criptop2p.controller.dto.LoginDTO
-import ar.edu.unq.criptop2p.controller.dto.UserDTO
-import ar.edu.unq.criptop2p.model.Address
-import ar.edu.unq.criptop2p.persistance.UserRepository
 import ar.edu.unq.criptop2p.service.UserService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.hamcrest.Matchers
@@ -30,8 +27,6 @@ internal class UserControllerTest(
     @Autowired
     private val userController: UserController,
     @Autowired
-    private val userRepository: UserRepository,
-    @Autowired
     private val userService: UserService
 ) : AbstractTest() {
 
@@ -54,7 +49,7 @@ internal class UserControllerTest(
                 .accept(MediaType.APPLICATION_JSON)
         )
 
-        val aSavedUser = userRepository.findByEmail(aUserDTO.email)
+        val aSavedUser = userService.findByEmail(aUserDTO.email)
 
         mvcPerform.andExpect(status().isOk)
         assert(aSavedUser != null)
