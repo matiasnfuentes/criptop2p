@@ -48,6 +48,8 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 	testImplementation(kotlin("test"))
 	testImplementation("com.ninja-squad:springmockk:3.1.1")
+	testImplementation("com.tngtech.archunit:archunit-junit5-api:1.0.0")
+	testImplementation("com.tngtech.archunit:archunit-junit5-engine:1.0.0")
 }
 
 tasks.withType<KotlinCompile> {
