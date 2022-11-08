@@ -33,7 +33,9 @@ class Address(
     fun getStreet(): String = this.street
     fun getNumber(): Int = this.number
     fun getCity(): String = this.city
-
     fun getId(): Long? = this.id
+    override fun toString(): String {
+        return "Address(street=$street, number=$number, city=$city, id=$id)"
+    }
 
 }

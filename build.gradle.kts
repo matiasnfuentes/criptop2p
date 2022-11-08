@@ -35,22 +35,33 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-	runtimeOnly("com.h2database:h2")
-	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.springframework.security:spring-security-test")
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
 	implementation("org.springframework.boot:spring-boot-starter-validation:2.7.3")
 	implementation("org.springframework.security:spring-security-crypto:5.7.3")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	implementation("org.springframework.boot:spring-boot-starter-aop:2.7.5")
+	implementation("org.springframework.boot:spring-boot-starter-log4j2")
+
+	runtimeOnly("com.h2database:h2")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation(kotlin("test"))
 	testImplementation("com.ninja-squad:springmockk:3.1.1")
 	testImplementation("com.tngtech.archunit:archunit-junit5-api:1.0.0")
 	testImplementation("com.tngtech.archunit:archunit-junit5-engine:1.0.0")
 }
+
+configurations.all {
+	exclude("org.springframework.boot", "spring-boot-starter-logging")
+}
+
 
 tasks.withType<KotlinCompile> {
 	kotlinOptions {

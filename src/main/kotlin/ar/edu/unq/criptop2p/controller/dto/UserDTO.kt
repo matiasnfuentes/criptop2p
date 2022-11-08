@@ -46,5 +46,9 @@ class UserDTO(
 
     }
 
+    override fun toString(): String {
+        return "UserDTO(firstName=$firstName, lastName=$lastName, email=$email, password=XXXXXX, cvu='$cvu', walletAddress=$walletAddress, address=${address.toString()}, id=$id)"
+    }
+
 
 }
