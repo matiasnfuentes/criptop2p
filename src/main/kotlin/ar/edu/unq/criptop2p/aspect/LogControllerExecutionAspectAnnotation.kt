@@ -22,14 +22,14 @@ class LogControllerExecutionAspectAnnotation {
         val executionTime = System.currentTimeMillis() - start
         val args = joinPoint.args.joinToString()
 
-        logger.info("/////// Start Web-Services audit ///////")
+        logger.info("------ Start Web-Services audit ------")
         logger.info(joinPoint.signature.declaringTypeName + "." + joinPoint.signature.name + " executed in " + executionTime + "ms")
         if (joinPoint.args.isEmpty()) {
             logger.info("Ran without parameters")
         } else {
             logger.info("Parameters: $args")
         }
-        logger.info("/////// End Web-Services audit ///////")
+        logger.info("------ End Web-Services audit ------")
 
         return proceed
 

@@ -14,4 +14,8 @@ data class LoginDTO(
         message = "Password should be at lest 6 char long, with 1 uppercase, 1 lowercase, special character"
     )
     val password: String
-)
+) {
+    override fun toString(): String {
+        return "LoginDTO(email=$email, password=XXXXXX)"
+    }
+}
