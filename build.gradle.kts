@@ -41,6 +41,9 @@ dependencies {
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
 	implementation("org.springframework.boot:spring-boot-starter-aop:2.7.5")
 	implementation("org.springframework.boot:spring-boot-starter-log4j2")
+	implementation("redis.clients:jedis:4.3.1")
+	implementation("org.springframework.boot:spring-boot-configuration-processor:2.7.5")
+
 
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
