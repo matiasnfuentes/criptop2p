@@ -13,7 +13,7 @@ class ListableRequestDTO(
     val lastnameName: String,
     val userOperations: Int,
     val userReputation: String,
-    val timeStamp: Date,
+    val timestamp: Date,
     val id: Long?
 ) {
 

@@ -29,7 +29,7 @@ class CryptoCurrency(
 
     fun getPrice(): Double = this.price
     fun getSymbol(): String = this.symbol
-    fun getTimeStamp(): Date? = this.timestamp
+    fun getTimestamp(): Date? = this.timestamp
 
     companion object {
 

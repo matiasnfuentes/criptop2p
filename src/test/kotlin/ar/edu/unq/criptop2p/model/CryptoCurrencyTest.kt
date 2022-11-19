@@ -29,7 +29,7 @@ internal class CryptoCurrencyTest: AbstractTest() {
         val aDate = Date()
         val aCryptoCurrency = factory.aCryptoCurrency(date = aDate)
 
-        assertEquals(aDate, aCryptoCurrency.getTimeStamp())
+        assertEquals(aDate, aCryptoCurrency.getTimestamp())
     }
 
     @Test

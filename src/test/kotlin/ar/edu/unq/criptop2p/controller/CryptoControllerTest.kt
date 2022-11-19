@@ -1,6 +1,7 @@
 package ar.edu.unq.criptop2p.controller
 
 import ar.edu.unq.criptop2p.model.CryptoCurrency
+import ar.edu.unq.criptop2p.service.CacheService
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
 import org.junit.jupiter.api.Test
@@ -22,11 +23,17 @@ import kotlin.test.assertEquals
 @ActiveProfiles(profiles = ["test"])
 class CryptoControllerTest(
     @Autowired
-    val mockMvc: MockMvc
+    val mockMvc: MockMvc,
+    @Autowired
+    val cacheService: CacheService
 ) {
 
     @MockkBean
     lateinit var restTemplate: RestTemplate
+
+    init {
+        cacheService.flushDB()
+    }
 
     @Test
     fun last24HsPrices() {
@@ -38,10 +45,10 @@ class CryptoControllerTest(
         )
 
         val expectedResponse =
-            "[{\"price\":19041.92,\"symbol\":\"BTCUSDT\",\"timeStamp\":\"2022-10-21T00:00:00.000+00:00\"}," +
-             "{\"price\":19048.83,\"symbol\":\"BTCUSDT\",\"timeStamp\":\"2022-10-21T01:00:00.000+00:00\"}," +
-             "{\"price\":19065.86,\"symbol\":\"BTCUSDT\",\"timeStamp\":\"2022-10-21T02:00:00.000+00:00\"}," +
-             "{\"price\":19109.49,\"symbol\":\"BTCUSDT\",\"timeStamp\":\"2022-10-21T03:00:00.000+00:00\"}]"
+            "[{\"price\":19041.92,\"symbol\":\"BTCUSDT\",\"timestamp\":\"2022-10-21T00:00:00.000+00:00\"}," +
+             "{\"price\":19048.83,\"symbol\":\"BTCUSDT\",\"timestamp\":\"2022-10-21T01:00:00.000+00:00\"}," +
+             "{\"price\":19065.86,\"symbol\":\"BTCUSDT\",\"timestamp\":\"2022-10-21T02:00:00.000+00:00\"}," +
+             "{\"price\":19109.49,\"symbol\":\"BTCUSDT\",\"timestamp\":\"2022-10-21T03:00:00.000+00:00\"}]"
 
         every {
             restTemplate.getForObject(
@@ -63,23 +70,18 @@ class CryptoControllerTest(
     @Test
     fun prices() {
         val date = Date(1666580400000)
-        val lastPrices: Array<CryptoCurrency> = arrayOf(
+        val lastPrices: List<CryptoCurrency> = listOf(
             CryptoCurrency(19041.92000000, "BTCUSDT", date),
             CryptoCurrency(12041.92000000, "MATICUSDT", date),
             CryptoCurrency(15041.92000000, "TRXUSDT", date),
         )
 
         val expectedResponse =
-            "[{\"price\":19041.92,\"symbol\":\"BTCUSDT\",\"timeStamp\":\"2022-10-24T03:00:00.000+00:00\"}," +
-             "{\"price\":12041.92,\"symbol\":\"MATICUSDT\",\"timeStamp\":\"2022-10-24T03:00:00.000+00:00\"}," +
-             "{\"price\":15041.92,\"symbol\":\"TRXUSDT\",\"timeStamp\":\"2022-10-24T03:00:00.000+00:00\"}]"
+            "[{\"price\":12041.92,\"symbol\":\"MATICUSDT\",\"timestamp\":\"2022-10-24T03:00:00.000+00:00\"}," +
+             "{\"price\":19041.92,\"symbol\":\"BTCUSDT\",\"timestamp\":\"2022-10-24T03:00:00.000+00:00\"}," +
+             "{\"price\":15041.92,\"symbol\":\"TRXUSDT\",\"timestamp\":\"2022-10-24T03:00:00.000+00:00\"}]"
 
-        every {
-            restTemplate.getForObject(
-                any<String>(),
-                Array<CryptoCurrency>::class.java
-            )
-        } returns lastPrices
+        cacheService.storeCurrencyPrices(lastPrices)
 
         val mvcResponse = mockMvc.perform(
             MockMvcRequestBuilders
