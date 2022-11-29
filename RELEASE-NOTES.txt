@@ -1,4 +1,21 @@
 ---------------------------------------------------------------------
+TAG ENTREGA3
+---------------------------------------------------------------------
+NEW FEATURES:
+    Core:
+        Tests de arquitectura implementados
+        Auditoria de webservices (timestamp, user, operación/método, parámetros, tiempo de ejecución)
+
+    Funcionalidad:
+        Listado de cotizaciones (alta performance, redis cloud)
+NOTES
+    Se corrigió el volumen de cripto activos operados para un usuario (se suman los valores de compra y venta)
+    Entrega completa, ninguna funcionalidad faltante.
+
+KNOWN ISSUES
+    -
+
+---------------------------------------------------------------------
 TAG ENTREGA2
 ---------------------------------------------------------------------
 NEW FEATURES:
@@ -7,19 +24,19 @@ NEW FEATURES:
         Aumentado el coverage de unit test del modelo a casi 100 %
         Agregado escaneo de test coverage en SonarCloud
         Se añaden datos "fake" en la configuración de springboot para probar la app.
-        Documentation de Endpoints (APIs) con Swagger (v3)
+        Documentación de Endpoints (APIs) con Swagger (v3)
 
     Funcionalidad:
         Informar el volumen de cripto activos operado por un usuario entre dos fechas.
         Crear y procesar una solicitud de compra / venta
         Listado de intenciones activas de compra / venta
-        Calculo de reputación y cantidad de operaciones en el listado de usuarios
+        Cálculo de reputación y cantidad de operaciones en el listado de usuarios
 
 NOTES
     Entrega completa, ninguna funcionalidad faltante.
 
 KNOWN ISSUES
-    Ninguno de nuestro conocimiento
+    -
 
 ---------------------------------------------------------------------
 TAG ENTREGA1
@@ -30,9 +47,9 @@ NEW FEATURES:
         Configuración en Travis/GitHubActions
         Build corriendo y SUCCESS
         SonarCloud (Registrar el proyecto Backend)
-        Deploy automático utlizando HEROKU o cualquiera similar para deploy Automático
+        Deploy automático utilizando HEROKU o cualquiera similar para deploy Automático
         Clean Code según la materia
-        Configuracion de swagge (v3)
+        Configuración de swagger (v3)
         Estado de build en "Verde"
         Utilizar H2 para persistir datos
 
@@ -41,11 +58,11 @@ NEW FEATURES:
         Testing automático unitario según las pautas de la materia
 
     Funcionalidad
-        Proveer servicio de registracion de usuario
-        Listar cotizacion de criptoactivos
+        Proveer servicio de registración de usuario
+        Listar cotización de criptoactivos
         Permitir que un usuario exprese su intención de compra/venta
         Segurizar el acceso a la API (JWT)
-        Mostrar las cotizaciones de las últimas 24hs para un cripto activo dado
+        Mostrar las cotizaciones de las últimas 24 hs para un cripto activo dado
         Listado de cotizaciones
 
 NOTES:
